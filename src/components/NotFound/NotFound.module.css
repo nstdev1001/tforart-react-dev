@@ -1,0 +1,62 @@
+.errorContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  padding: 20px;
+}
+
+.errorContent {
+  text-align: center;
+  max-width: 600px;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.errorTitle {
+  font-size: 6rem;
+  margin-bottom: 1rem;
+  font-weight: 200;
+  letter-spacing: 2px;
+  background: linear-gradient(45deg, #ffffff, #a0a0a0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.errorMessage {
+  font-size: 1.1rem;
+  color: #a0a0a0;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.backButton {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 12px 30px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.backButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.errorDetails {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: rgba(255, 0, 0, 0.1);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: #ff9999;
+  font-family: monospace;
+}

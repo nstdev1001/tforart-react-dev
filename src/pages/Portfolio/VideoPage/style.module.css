@@ -1,0 +1,49 @@
+.videoWrapper {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  will-change: transform;
+}
+
+/* dnd */
+
+.videoWrapper.dragging {
+  z-index: 999;
+  cursor: grabbing;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Effect for dragged video */
+.previewDrag {
+  transform-origin: 0 0;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  cursor: grabbing;
+  opacity: 0.9 !important;
+  border: 2px dashed #3498db;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* Effect for target position */
+.sortableEnabled [data-dnd-placeholder] {
+  background-color: rgba(52, 152, 219, 0.2);
+  border: 2px dashed #3498db;
+  border-radius: 4px;
+}
+
+/* Hover effect for video wrapper */
+.videoWrapper:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Animation when video changes position */
+@keyframes highlight {
+  0% {
+    background-color: rgba(52, 152, 219, 0.2);
+  }
+  100% {
+    background-color: transparent;
+  }
+}

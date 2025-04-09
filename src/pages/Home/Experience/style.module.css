@@ -1,0 +1,22 @@
+.experienceContainer {
+  max-width: 1200px; /* Adjust based on your design */
+}
+
+.experienceItem {
+  border: 1px solid #cccccc8a;
+  width: 200px;
+  border-radius: 6px;
+  display: flex;
+  justify-items: center;
+  gap: 10px;
+  padding: 20px 30px;
+}
+
+.experienceItem h2 {
+  font-size: 30px;
+  font-weight: 500;
+}
+
+.experienceItem p {
+  color: rgba(255, 255, 255, 0.777);
+}

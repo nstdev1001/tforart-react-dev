@@ -1,0 +1,8 @@
+.footerContainer {
+  background-color: black;
+}
+
+.socialIconWrapper i {
+  font-size: 25px;
+  cursor: pointer;
+}

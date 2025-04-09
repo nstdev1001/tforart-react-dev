@@ -1,0 +1,151 @@
+.navbarPcContainer {
+  position: fixed;
+  justify-content: space-between;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 80%;
+  margin: 0 auto;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 15px 50px;
+  border-radius: 12px;
+  margin-top: 20px;
+  transition: all 0.5s ease-in-out;
+}
+
+.navbarScroll {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  z-index: 20;
+  background-color: rgba(0, 0, 0, 1);
+  padding: 15px 50px;
+  border-radius: 0px 0px 12px 12px;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 1px 30px rgba(255, 255, 255, 0.3);
+}
+
+.sideMenu {
+  width: 250px;
+  background-color: #1b1b1b;
+  position: fixed;
+  height: 100%;
+  top: 0;
+  left: -250px;
+  overflow-x: hidden;
+  transition: left 0.3s ease-in-out;
+  z-index: 15;
+}
+
+.sideMenu.open {
+  left: 0;
+}
+
+.navItem {
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.navItem:hover {
+  text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #eee5a9,
+    0 0 25px #eee5b7, 0 0 10px #f1e699, 0 0 30px #f9e981;
+}
+
+.navItem.active {
+  color: #fff; /* Change text color for active tab */
+  text-shadow: 0 0 5px #cacaca, 0 0 10px #9c9c9c, 0 0 15px #fff,
+    0 0 20px #a1a1a1, 0 0 25px #a7a7a7, 0 0 10px #d1d1d1, 0 0 30px #f0f0f0;
+}
+
+.secondaryMenuItems {
+  margin-top: auto;
+  margin-bottom: 40px;
+}
+
+.secondaryMenuItems div {
+  font-size: 0.9rem;
+  color: #a0a0a0;
+  transition: all 0.3s;
+}
+
+.secondaryMenuItems div:hover {
+  color: #ffffff;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+/* css menu bar button sp */
+.navbarSpContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 55px;
+  background: black;
+  z-index: 10;
+}
+
+.menuToggleButton {
+  position: fixed;
+  padding: 20px 20px;
+  cursor: pointer;
+  z-index: 20;
+}
+
+.sidebarOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+.mobileLogo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+
+.hamburger {
+  width: 15px;
+  height: 15px;
+  position: relative;
+}
+
+.bar {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background-color: white;
+  transition: all 0.3s ease-in-out;
+}
+
+.bar1 {
+  top: 0;
+}
+
+.bar2 {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.bar3 {
+  bottom: 0;
+}
+
+.hamburger.open .bar1 {
+  transform: translateY(6.5px) rotate(45deg);
+}
+
+.hamburger.open .bar2 {
+  opacity: 0;
+}
+
+.hamburger.open .bar3 {
+  transform: translateY(-6.5px) rotate(-45deg);
+}

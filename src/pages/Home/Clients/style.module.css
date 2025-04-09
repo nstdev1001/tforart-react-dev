@@ -1,0 +1,8 @@
+.group {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #e5e5e5,
+    transparent
+  );
+}
