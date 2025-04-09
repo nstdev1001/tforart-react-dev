@@ -1,6 +1,7 @@
 # TFORART Media Company Website
 
-![tforart-main](https://github.com/user-attachments/assets/d9e71fac-80f8-4ca6-b397-ef30ac60bb8c)
+![tforart-main](https://github.com/user-attachments/assets/1bef90cd-1ea4-4d0d-adb6-90d1379169ac)
+
 
 
 Official website for TFORART - a professional media and communications company.
