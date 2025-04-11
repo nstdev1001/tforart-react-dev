@@ -115,18 +115,9 @@ body::before {
 
 @layer base {
   * {
-    @apply border-border;
-  }
-  body {
-    @apply dark text-foreground;
-  }
-}
-
-@layer base {
-  * {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply dark bg-background text-foreground;
   }
 }
