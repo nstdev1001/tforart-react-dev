@@ -19,6 +19,7 @@ import useControlEmail from "@/hooks/useControlEmail";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import {
+  ArrowRight,
   Calendar as CalendarIcon,
   DollarSign as DollarIcon,
   Mail as MailIcon,
@@ -26,7 +27,7 @@ import {
   User as UserIcon,
 } from "lucide-react";
 import { useState } from "react";
-import "./style.css";
+import { Link } from "react-router-dom";
 
 const CustomForm = () => {
   const { form, onSubmit, isLoading } = useControlEmail();
@@ -222,13 +223,32 @@ const CustomForm = () => {
 
           {/* Submit Button */}
           <Button
-            className="w-full rounded-full"
+            className="group w-full rounded-full"
             type="submit"
             variant="outline"
             disabled={isLoading}
           >
-            Submit Now
+            Gửi thông tin{" "}
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </Button>
+          <div className="text-center text-sm text-gray-500">
+            Bằng cách nhấp vào nút gửi, bạn đồng ý với{" "}
+            <Link
+              to="/privacy-policy"
+              target="_blank"
+              className="text-gray-300 underline"
+            >
+              Điều khoản dịch vụ
+            </Link>{" "}
+            và{" "}
+            <Link
+              to="/privacy-policy"
+              target="_blank"
+              className="text-gray-300 underline"
+            >
+              Chính sách bảo mật
+            </Link>
+          </div>
         </form>
       </Form>
     </div>
