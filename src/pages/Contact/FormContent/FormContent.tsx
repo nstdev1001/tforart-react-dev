@@ -26,7 +26,6 @@ import {
   User as UserIcon,
 } from "lucide-react";
 import { useState } from "react";
-import "./style.css";
 
 const CustomForm = () => {
   const { form, onSubmit, isLoading } = useControlEmail();
