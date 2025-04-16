@@ -1,12 +1,11 @@
-import AddAlbumDialog from "./_components/AddAlbumDialog";
-import UpdateAlbumDialog from "./_components/UpdateAlbumDialog";
 import styles from "./style.module.css";
 import DeleteConfirmDialog from "@/components/DeleteConfirmDialog";
 import { Button } from "@/components/ui/button";
 import { defaultOpacityMotionProps } from "@/config/motion_config";
 import useAuth from "@/hooks/useAuth";
-import useControlAlbum from "@/hooks/useControlAlbum";
-import { AlbumData } from "@/types/albumDataType";
+import useControlGraphicProject from "@/hooks/useControlGraphicProject";
+import AddProjectDialog from "@/pages/Portfolio/GraphicPage/_components/AddProjectDialog";
+import UpdateProjectDialog from "@/pages/Portfolio/GraphicPage/_components/UpdateProjectDialog";
 import { GraphicProjectData } from "@/types/graphicDataType";
 import {
   closestCenter,
@@ -40,7 +39,7 @@ interface SortableProjectProps {
   checkIsLogin: boolean;
   handleEditClick: (project: GraphicProjectData) => void;
   handleDeleteClick: (project: GraphicProjectData) => void;
-  deleteAlbumMutaion: {
+  deleteProjectMutation: {
     mutate: UseMutateFunction<void, unknown, string, unknown>;
   };
   toUrlSlug: (title: string) => string;
@@ -51,7 +50,7 @@ interface DragProjectPreviewProps {
   project: GraphicProjectData;
 }
 
-const SortableAlbum = ({
+const SortableProject = ({
   project,
   index,
   checkIsLogin,
@@ -148,7 +147,7 @@ const SortableAlbum = ({
   );
 };
 
-const DragAlbumPreview = ({ project }: DragProjectPreviewProps) => {
+const DragProjectPreview = ({ project }: DragProjectPreviewProps) => {
   return (
     <div className={`${styles.album} relative ${styles.previewDrag}`}>
       <img
@@ -163,17 +162,22 @@ const DragAlbumPreview = ({ project }: DragProjectPreviewProps) => {
   );
 };
 
-const AlbumPage = () => {
+const GraphicPage = () => {
   const { checkIsLogin } = useAuth();
   const navigate = useNavigate();
-  const { albums, toUrlSlug, deleteAlbumMutaion, updateAlbumPositionMutation } =
-    useControlAlbum();
-  const [editAlbumData, setEditAlbumData] = useState<GraphicProjectData | null>(
-    null
-  );
+  const {
+    projects,
+    toUrlSlug,
+    deleteProjectMutation,
+    updateProjectPositionMutation,
+  } = useControlGraphicProject();
+  const [editProjectData, setEditProjectData] =
+    useState<GraphicProjectData | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [orderedAlbums, setOrderedAlbums] = useState<AlbumData[]>([]);
+  const [orderedProjects, setOrderedProjects] = useState<GraphicProjectData[]>(
+    []
+  );
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
 
   // Sensors for drag detection
@@ -189,23 +193,23 @@ const AlbumPage = () => {
   );
 
   useEffect(() => {
-    if (albums) {
-      setOrderedAlbums([...albums]);
+    if (projects) {
+      setOrderedProjects([...projects]);
     }
-  }, [albums]);
+  }, [projects]);
 
   const handleEditClick = (project: GraphicProjectData) => {
-    setEditAlbumData(project);
+    setEditProjectData(project);
     setIsEditDialogOpen(true);
   };
   const handleDeleteClick = (project: GraphicProjectData) => {
-    setEditAlbumData(project);
+    setEditProjectData(project);
     setIsDeleteDialogOpen(true);
   };
 
-  // Find active album for overlay
-  const activeAlbum = activeId
-    ? orderedAlbums.find((album) => album.id === activeId)
+  // Find active project for overlay
+  const activeProject = activeId
+    ? orderedProjects.find((project) => project.id === activeId)
     : null;
 
   // DnD handlers
@@ -219,18 +223,18 @@ const AlbumPage = () => {
     setActiveId(null);
 
     if (over && active.id !== over.id) {
-      setOrderedAlbums((items) => {
+      setOrderedProjects((items) => {
         const oldIndex = items.findIndex((item) => item.id === active.id);
         const newIndex = items.findIndex((item) => item.id === over.id);
         const newItems = arrayMove(items, oldIndex, newIndex);
 
-        if (updateAlbumPositionMutation) {
-          const updatedPositions = newItems.map((album, index) => ({
-            ...album,
-            id: album.id,
+        if (updateProjectPositionMutation) {
+          const updatedPositions = newItems.map((project, index) => ({
+            ...project,
+            id: project.id,
             position: index,
           }));
-          updateAlbumPositionMutation.mutate(updatedPositions);
+          updateProjectPositionMutation.mutate(updatedPositions);
         }
         return newItems;
       });
@@ -250,21 +254,21 @@ const AlbumPage = () => {
 
   return (
     <Fragment>
-      {checkIsLogin && <AddAlbumDialog />}
+      {checkIsLogin && <AddProjectDialog />}
 
       <DeleteConfirmDialog
         data={{
-          id: editAlbumData?.id || "",
-          title: editAlbumData?.albumTitle || "",
+          id: editProjectData?.id || "",
+          title: editProjectData?.projectTitle || "",
         }}
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
-        deleteMutation={deleteAlbumMutaion}
-        dialogTitle="Bạn có chắc chắn muốn xóa album"
+        deleteMutation={deleteProjectMutation}
+        dialogTitle="Bạn có chắc chắn muốn xóa project"
       />
 
-      <UpdateAlbumDialog
-        albumData={editAlbumData}
+      <UpdateProjectDialog
+        projectData={editProjectData}
         isOpen={isEditDialogOpen}
         onClose={() => setIsEditDialogOpen(false)}
       />
@@ -282,18 +286,18 @@ const AlbumPage = () => {
           }`}
         >
           <SortableContext
-            items={orderedAlbums.map((album) => album.id)}
+            items={orderedProjects.map((project) => project.id)}
             strategy={rectSortingStrategy}
           >
-            {orderedAlbums.map((album, index) => (
-              <SortableAlbum
-                key={album.id}
+            {orderedProjects.map((project, index) => (
+              <SortableProject
+                key={project.id}
                 project={project}
                 index={index}
                 checkIsLogin={checkIsLogin}
                 handleEditClick={handleEditClick}
                 handleDeleteClick={handleDeleteClick}
-                deleteAlbumMutaion={deleteAlbumMutaion}
+                deleteProjectMutation={deleteProjectMutation}
                 toUrlSlug={toUrlSlug}
                 navigate={navigate}
               />
@@ -302,8 +306,8 @@ const AlbumPage = () => {
         </div>
 
         <DragOverlay dropAnimation={dropAnimation}>
-          {activeId && activeAlbum ? (
-            <DragAlbumPreview project={activeAlbum} />
+          {activeId && activeProject ? (
+            <DragProjectPreview project={activeProject} />
           ) : null}
         </DragOverlay>
       </DndContext>
@@ -311,4 +315,4 @@ const AlbumPage = () => {
   );
 };
 
-export default AlbumPage;
+export default GraphicPage;
