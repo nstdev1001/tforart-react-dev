@@ -198,7 +198,7 @@ const useControlGraphicProject = () => {
     mutationFn: async (collectionId: string) => {
       if (collectionId) {
         NProgress.start();
-        const albumRef = ref(storage, `collections/${collectionId}`);
+        const albumRef = ref(storage, `graphics/${collectionId}`);
 
         //list all images in the collection
         const listResult = await listAll(albumRef);
