@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { graphicProjectSchema } from "@/schema/graphicProjectSchema";
-import { AlbumData } from "@/types/albumDataType";
 import { GraphicProjectData } from "@/types/graphicDataType";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -224,7 +223,7 @@ const useControlGraphicProject = () => {
   });
 
   const updateProjectPositionMutation = useMutation({
-    mutationFn: async (position: AlbumData[]) => {
+    mutationFn: async (position: GraphicProjectData[]) => {
       NProgress.start();
       const batch = writeBatch(db);
 
