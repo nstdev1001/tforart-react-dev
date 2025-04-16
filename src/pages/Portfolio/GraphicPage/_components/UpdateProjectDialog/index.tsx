@@ -22,7 +22,7 @@ interface Props {
   onClose: () => void;
 }
 
-const UpdateAlbumDialog = ({ projectData, isOpen, onClose }: Props) => {
+const UpdateProjectDialog = ({ projectData, isOpen, onClose }: Props) => {
   const { form, watch, editProjectMutation, isPending } =
     useControlGraphicProject();
 
@@ -56,7 +56,7 @@ const UpdateAlbumDialog = ({ projectData, isOpen, onClose }: Props) => {
     onClose();
   };
 
-  const handleUpdateAlbum = () => {
+  const handleUpdateProject = () => {
     const formValues = form.getValues();
     const updatedData = {
       ...formValues,
@@ -94,7 +94,7 @@ const UpdateAlbumDialog = ({ projectData, isOpen, onClose }: Props) => {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                void form.handleSubmit(handleUpdateAlbum)();
+                void form.handleSubmit(handleUpdateProject)();
               }}
               className="flex flex-col gap-8"
             >
@@ -124,7 +124,7 @@ const UpdateAlbumDialog = ({ projectData, isOpen, onClose }: Props) => {
                     <FormLabel className="font-bold">Mô tả</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Nhập mô tả album (không bắt buộc)"
+                        placeholder="Nhập mô tả project (không bắt buộc)"
                         {...field}
                       />
                     </FormControl>
@@ -177,21 +177,21 @@ const UpdateAlbumDialog = ({ projectData, isOpen, onClose }: Props) => {
               </div>
 
               <Button className="w-full" type="submit" disabled={isPending}>
-                Cập nhật album
+                Cập nhật project
               </Button>
             </form>
           </Form>
         </div>
-        <div className="preview-album flex flex-col items-center justify-center gap-8">
-          <h1 className="text-center text-2xl">Xem trước album</h1>
+        <div className="preview-project flex flex-col items-center justify-center gap-8">
+          <h1 className="text-center text-2xl">Xem trước project</h1>
           <div
-            className="album h-[348px] w-[384px] relative"
-            key={`album-${"album.id"}`}
+            className="project h-[348px] w-[384px] relative"
+            key={`project-${"project.id"}`}
           >
             {previewUrls.length > 0 ? (
               <img
                 src={previewUrls[0]}
-                alt={selectedFiles[0]?.name || "Album thumbnail"}
+                alt={selectedFiles[0]?.name || "Project thumbnail"}
                 className="w-full h-auto object-cover"
               />
             ) : (
@@ -213,4 +213,4 @@ const UpdateAlbumDialog = ({ projectData, isOpen, onClose }: Props) => {
   );
 };
 
-export default UpdateAlbumDialog;
+export default UpdateProjectDialog;
