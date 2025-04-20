@@ -77,7 +77,7 @@ const SortableProject = ({
 
   return (
     <motion.div
-      className={`${styles.album} relative ${
+      className={`${styles.project} relative ${
         isDragging ? `${styles.dragging}` : ""
       }`}
       ref={setNodeRef}
@@ -88,7 +88,7 @@ const SortableProject = ({
         const target = e.target as Element;
         const isInteractiveElement =
           target.closest(".dragHandle") ||
-          target.closest(".control-album") ||
+          target.closest(".control-project") ||
           target.closest("button");
 
         if (!isInteractiveElement) {
@@ -104,7 +104,7 @@ const SortableProject = ({
             <i className="fa-solid fa-grip-lines"></i>
           </div>
           <div
-            className="control-album hidden md:block absolute top-1 right-1 z-10"
+            className="control-project hidden md:block absolute top-1 right-1 z-10"
             onClick={(e) => e.stopPropagation()}
           >
             <Button onClick={() => handleEditClick(project)}>
@@ -149,7 +149,7 @@ const SortableProject = ({
 
 const DragProjectPreview = ({ project }: DragProjectPreviewProps) => {
   return (
-    <div className={`${styles.album} relative ${styles.previewDrag}`}>
+    <div className={`${styles.project} relative ${styles.previewDrag}`}>
       <img
         src={project.thumbnailUrl}
         alt={project.projectTitle}
@@ -281,7 +281,7 @@ const GraphicPage = () => {
         onDragCancel={() => setActiveId(null)}
       >
         <div
-          className={`album-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 ${
+          className={`project-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 ${
             checkIsLogin ? `${styles.sortableEnabled}` : ""
           }`}
         >
