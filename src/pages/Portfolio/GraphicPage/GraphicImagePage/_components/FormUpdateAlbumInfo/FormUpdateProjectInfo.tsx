@@ -11,13 +11,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { UseFormReturn } from "react-hook-form";
 
-interface EditAlbumFormProps {
+interface EdiProjectFormProps {
   form: UseFormReturn<any>;
   onSubmit: () => void;
   onCancel: () => void;
 }
 
-const EditAlbumForm = ({ form, onSubmit, onCancel }: EditAlbumFormProps) => {
+const EditProjectForm = ({ form, onSubmit, onCancel }: EdiProjectFormProps) => {
   return (
     <Form {...form}>
       <form
@@ -84,4 +84,4 @@ const EditAlbumForm = ({ form, onSubmit, onCancel }: EditAlbumFormProps) => {
   );
 };
 
-export default EditAlbumForm;
+export default EditProjectForm;
