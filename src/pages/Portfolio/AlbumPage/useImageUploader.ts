@@ -11,7 +11,7 @@ import NProgress from "nprogress";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-const useFirebaseImageUploader = (
+const useImageUploader = (
   albumBucket: string,
   setSelectedPhotos?: (photos: File[]) => void
 ) => {
@@ -19,7 +19,6 @@ const useFirebaseImageUploader = (
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
-  const [images, setImages] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
 
@@ -61,7 +60,6 @@ const useFirebaseImageUploader = (
         () => {
           getDownloadURL(storageRef)
             .then((url) => {
-              setImages((prev) => [...prev, url]);
               resolve(url);
             })
             .catch((getUrlError: Error) => {
@@ -143,7 +141,6 @@ const useFirebaseImageUploader = (
     uploadImage,
     uploadProgress,
     setUploadProgress,
-    images,
     error,
     deletePhotoMutation,
     photos,
@@ -155,4 +152,4 @@ const useFirebaseImageUploader = (
   };
 };
 
-export default useFirebaseImageUploader;
+export default useImageUploader;

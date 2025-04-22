@@ -6,7 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Skeleton } from "@/components/ui/skeleton";
 import useAuth from "@/hooks/useAuth";
 import useControlAlbum from "@/hooks/useControlAlbum";
-import useImageUploader from "@/pages/Portfolio/AlbumPage/useImageUploader";
+import useGraphicUploader from "@/pages/Portfolio/GraphicPage/useGraphicUploader";
 import { Fragment, useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
@@ -14,7 +14,7 @@ interface HandleCheckboxChange {
   (value: string): void;
 }
 
-const ImagePage = () => {
+const GraphicImagePage = () => {
   const { checkIsLogin } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -23,7 +23,7 @@ const ImagePage = () => {
     null
   );
   const { albums, editAlbumMutation, form } = useControlAlbum();
-  const { photos, deletePhotoMutation } = useImageUploader(id || "");
+  const { photos, deletePhotoMutation } = useGraphicUploader(id || "");
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
   const [selectAllChecked, setSelectAllChecked] = useState(false);
   const [editAlbumInfo, setEditAlbumInfo] = useState<boolean>(false);
@@ -105,9 +105,9 @@ const ImagePage = () => {
       <Button
         variant={"outline"}
         className="w-[100px]"
-        onClick={() => navigate("/portfolio/photos")}
+        onClick={() => navigate("/portfolio/graphics")}
       >
-        <i className="fa-solid fa-arrow-left-long"></i> Back
+        <i className="fa-solid fa-arrow-left-long"></i> Quay lại
       </Button>
       <div className="title-wrapper flex flex-col items-center gap-3">
         {!albums ? (
@@ -171,7 +171,7 @@ const ImagePage = () => {
                 onClick={() => setIsDeleteDialogOpen(true)}
                 disabled={checkedItems.length === 0}
               >
-                <i className="fa-regular fa-trash-can"></i> Delete more
+                <i className="fa-regular fa-trash-can"></i> Xóa nhiều ảnh
               </Button>
             </div>
           </div>
@@ -205,7 +205,6 @@ const ImagePage = () => {
                       </Button>
                     </>
                   )}
-
                   <img
                     src={photo}
                     alt=""
@@ -268,4 +267,4 @@ const ImagePage = () => {
   );
 };
 
-export default ImagePage;
+export default GraphicImagePage;

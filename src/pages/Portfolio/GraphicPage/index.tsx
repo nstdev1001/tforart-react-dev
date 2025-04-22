@@ -93,7 +93,9 @@ const SortableProject = ({
 
         if (!isInteractiveElement) {
           navigate(
-            `/portfolio/photos/${project.id}/${toUrlSlug(project.projectTitle)}`
+            `/portfolio/graphics/${project.id}/${toUrlSlug(
+              project.projectTitle
+            )}`
           );
         }
       }}
@@ -127,7 +129,9 @@ const SortableProject = ({
         className="cursor-pointer"
         onClick={() =>
           navigate(
-            `/portfolio/photos/${project.id}/${toUrlSlug(project.projectTitle)}`
+            `/portfolio/graphics/${project.id}/${toUrlSlug(
+              project.projectTitle
+            )}`
           )
         }
       />
@@ -135,7 +139,7 @@ const SortableProject = ({
         className={`${styles.overlay} cursor-pointer`}
         onClick={() =>
           navigate(
-            `/portfolio/graphic/${project.id}/${toUrlSlug(
+            `/portfolio/graphics/${project.id}/${toUrlSlug(
               project.projectTitle
             )}`
           )
