@@ -6,26 +6,26 @@ export interface ProfileData {
 export const profileData: ProfileData[] = [
   {
     id: "c1",
-    imgUrl: "/Profile_TFORART_design/VINH.jpg",
+    imgUrl: "/Profile_TFORART_design/Vinh.png",
   },
   {
     id: "c2",
-    imgUrl: "/Profile_TFORART_design/TUNG.jpg",
+    imgUrl: "/Profile_TFORART_design/Tung.png",
   },
   {
     id: "c3",
-    imgUrl: "/Profile_TFORART_design/GIANG.jpg",
+    imgUrl: "/Profile_TFORART_design/Giang.png",
   },
   {
     id: "c4",
-    imgUrl: "/Profile_TFORART_design/HAI.jpg",
+    imgUrl: "/Profile_TFORART_design/Hai.png",
   },
   {
     id: "c5",
-    imgUrl: "/Profile_TFORART_design/HA.jpg",
+    imgUrl: "/Profile_TFORART_design/Ha.png",
   },
   {
     id: "c6",
-    imgUrl: "/Profile_TFORART_design/PHONG.jpg",
+    imgUrl: "/Profile_TFORART_design/Phong.png",
   },
 ];
