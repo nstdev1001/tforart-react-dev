@@ -10,7 +10,6 @@ import useControlGraphicProject from "@/hooks/useControlGraphicProject";
 import CustomGapSelector from "@/pages/Portfolio/GraphicPage/GraphicImagePage/_components/CustomGapSelector/CustomGapSelector";
 import FormUpdateProjectInfo from "@/pages/Portfolio/GraphicPage/GraphicImagePage/_components/FormUpdateAlbumInfo/FormUpdateProjectInfo";
 import useGraphicUploader from "@/pages/Portfolio/GraphicPage/useGraphicUploader";
-import { set } from "nprogress";
 import { Fragment, useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
@@ -56,7 +55,6 @@ const GraphicImagePage = () => {
       editProjectMutation.mutate({
         projectId: projectInfo.id,
         updatedData,
-        oldThumbnailUrl: projectInfo.thumbnailUrl,
       });
     }
     setEditprojectInfo(false);

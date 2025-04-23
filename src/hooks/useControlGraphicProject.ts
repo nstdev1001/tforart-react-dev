@@ -121,6 +121,10 @@ const useControlGraphicProject = () => {
       const docRef = await addDoc(collection(db, "graphicCollection"), {
         projectTitle,
         projectDescription: projectDescription || null,
+        isImageRounded: true,
+        gapImage: {
+          0: "0px",
+        },
         position: minPosition - 1, // Use a value lower than the current minimum
         createdAt: serverTimestamp(),
       });
