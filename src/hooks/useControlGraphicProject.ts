@@ -122,9 +122,7 @@ const useControlGraphicProject = () => {
         projectTitle,
         projectDescription: projectDescription || null,
         isImageRounded: true,
-        gapImage: {
-          0: "0px",
-        },
+        gapImage: "mb-4",
         position: minPosition - 1, // Use a value lower than the current minimum
         createdAt: serverTimestamp(),
       });
@@ -161,11 +159,15 @@ const useControlGraphicProject = () => {
       updatedData,
       thumbnailFile,
       oldThumbnailUrl,
+      isRoundedImage,
+      selectedGap,
     }: {
       projectId: string | undefined;
       updatedData: Partial<GraphicProjectData>;
       thumbnailFile?: File;
       oldThumbnailUrl?: string;
+      isRoundedImage?: boolean;
+      selectedGap: string;
     }) => {
       NProgress.start();
       if (projectId) {
@@ -183,6 +185,8 @@ const useControlGraphicProject = () => {
           return updateDoc(albumRef, {
             ...updatedData,
             thumbnailUrl,
+            isRoundedImage,
+            selectedGap,
           });
         }
       }

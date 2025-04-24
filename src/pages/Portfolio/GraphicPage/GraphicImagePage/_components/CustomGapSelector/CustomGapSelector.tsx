@@ -6,13 +6,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const CustomGapSelector = () => {
+interface Props {
+  gap: string;
+  onChange: (value: string) => void;
+}
+
+const CustomGapSelector = ({ gap, onChange }: Props) => {
   return (
-    <Select>
+    <Select value={gap} onValueChange={onChange}>
       <SelectTrigger className="w-[150px]">
         <SelectValue placeholder="Khoảng cách" />
       </SelectTrigger>
       <SelectContent>
+        <SelectItem value="mb-0">None</SelectItem>
         <SelectItem value="mb-4">12px</SelectItem>
         <SelectItem value="mb-5">16px</SelectItem>
         <SelectItem value="mb-6">20px</SelectItem>

@@ -32,9 +32,10 @@ const GraphicImagePage = () => {
   const [editprojectInfo, setEditprojectInfo] = useState<boolean>(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isRoundedImage, setIsRoundedImage] = useState(true);
+  const [selectedGap, setSelectedGap] = useState<string>("");
   const projectInfo = projects?.find((data) => data.id === id);
 
-  console.log("isRoundedImage", isRoundedImage);
+  console.log("projectInfo", projectInfo);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -55,9 +56,16 @@ const GraphicImagePage = () => {
       editProjectMutation.mutate({
         projectId: projectInfo.id,
         updatedData,
+        isRoundedImage,
+        selectedGap,
       });
     }
     setEditprojectInfo(false);
+  };
+
+  const handleRoundedImage = () => {
+    setIsRoundedImage((prev) => !prev);
+    handleUpdateprojectInfo();
   };
 
   const handleCheckboxChange: HandleCheckboxChange = (value) => {
@@ -190,10 +198,10 @@ const GraphicImagePage = () => {
                 <Switch
                   id="border-radius"
                   checked={isRoundedImage}
-                  onCheckedChange={setIsRoundedImage}
+                  onCheckedChange={handleRoundedImage}
                 />
               </div>
-              <CustomGapSelector />
+              <CustomGapSelector gap={selectedGap} onChange={setSelectedGap} />
             </div>
           )}
           {!photos
@@ -224,8 +232,8 @@ const GraphicImagePage = () => {
                     src={photo}
                     alt="image"
                     className={`w-full object-cover ${
-                      isRoundedImage && "rounded-lg"
-                    } cursor-pointer`}
+                      projectInfo?.isRoundedImage && "rounded-lg"
+                    } ${projectInfo?.gapImage} cursor-pointer`}
                     onClick={() => openFullScreen(index)}
                   />
                 </div>
