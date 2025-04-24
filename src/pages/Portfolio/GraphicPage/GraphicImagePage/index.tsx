@@ -31,7 +31,7 @@ const GraphicImagePage = () => {
   const [selectAllChecked, setSelectAllChecked] = useState(false);
   const [editprojectInfo, setEditprojectInfo] = useState<boolean>(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [isRoundedImage, setIsRoundedImage] = useState(true);
+  const [isRoundedImage, setIsRoundedImage] = useState(false);
   const [selectedGap, setSelectedGap] = useState<string>("");
   const projectInfo = projects?.find((data) => data.id === id);
 
@@ -58,6 +58,7 @@ const GraphicImagePage = () => {
         updatedData,
         isRoundedImage,
         selectedGap,
+        oldThumbnailUrl: projectInfo.thumbnailUrl,
       });
     }
     setEditprojectInfo(false);
@@ -197,11 +198,14 @@ const GraphicImagePage = () => {
                 <Label htmlFor="border-radius">Bo góc</Label>
                 <Switch
                   id="border-radius"
-                  checked={isRoundedImage}
+                  checked={projectInfo?.isRoundedImage}
                   onCheckedChange={handleRoundedImage}
                 />
               </div>
-              <CustomGapSelector gap={selectedGap} onChange={setSelectedGap} />
+              <CustomGapSelector
+                gap={projectInfo?.gapImage || ""}
+                onChange={setSelectedGap}
+              />
             </div>
           )}
           {!photos

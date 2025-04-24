@@ -59,7 +59,8 @@ const UpdateProjectDialog = ({ projectData, isOpen, onClose }: Props) => {
   const handleUpdateProject = () => {
     const formValues = form.getValues();
     const updatedData = {
-      ...formValues,
+      ...projectData,
+      projectTitle: formValues.projectTitle,
       projectDescription: formValues.projectDescription || null,
     };
 
