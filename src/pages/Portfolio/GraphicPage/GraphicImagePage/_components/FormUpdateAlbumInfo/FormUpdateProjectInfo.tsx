@@ -30,13 +30,13 @@ const EditProjectForm = ({ form, onSubmit, onCancel }: EdiProjectFormProps) => {
         <div className="flex flex-col items-center gap-5">
           <FormField
             control={form.control}
-            name="albumTitle"
+            name="projectTitle"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
                   <Input
                     type="text"
-                    placeholder="Type title of album"
+                    placeholder="Type title of project"
                     {...field}
                     className="text-4xl font-semibold w-[300px] md:w-[500px] text-center"
                   />
@@ -47,12 +47,12 @@ const EditProjectForm = ({ form, onSubmit, onCancel }: EdiProjectFormProps) => {
           />
           <FormField
             control={form.control}
-            name="albumDescription"
+            name="projectDescription"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
                   <Textarea
-                    placeholder="Description of album"
+                    placeholder="Description of project"
                     {...field}
                     className="w-[300px] md:w-[500px] text-center"
                   />

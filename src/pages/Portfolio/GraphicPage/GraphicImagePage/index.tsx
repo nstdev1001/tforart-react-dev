@@ -31,7 +31,7 @@ const GraphicImagePage = () => {
   const [selectAllChecked, setSelectAllChecked] = useState(false);
   const [editprojectInfo, setEditprojectInfo] = useState<boolean>(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [isRoundedImage, setIsRoundedImage] = useState(false);
+  const [isRoundedImage, setIsRoundedImage] = useState(true);
   const [selectedGap, setSelectedGap] = useState<string>("");
   const projectInfo = projects?.find((data) => data.id === id);
 
@@ -60,14 +60,35 @@ const GraphicImagePage = () => {
         selectedGap,
         oldThumbnailUrl: projectInfo.thumbnailUrl,
       });
+      console.log("Sent data:", { isRoundedImage });
     }
     setEditprojectInfo(false);
   };
 
   const handleRoundedImage = () => {
-    setIsRoundedImage((prev) => !prev);
-    handleUpdateprojectInfo();
+    setIsRoundedImage((prev) => {
+      const newValue = !prev;
+
+      if (projectInfo) {
+        editProjectMutation.mutate({
+          projectId: projectInfo.id,
+          updatedData: form.getValues(),
+          isRoundedImage: newValue,
+          selectedGap,
+          oldThumbnailUrl: projectInfo.thumbnailUrl,
+        });
+        console.log("Sent data:", { isRoundedImage: newValue });
+      }
+
+      return newValue;
+    });
   };
+
+  useEffect(() => {
+    if (projectInfo) {
+      setIsRoundedImage(projectInfo.isRoundedImage || false);
+    }
+  }, [projectInfo]);
 
   const handleCheckboxChange: HandleCheckboxChange = (value) => {
     setCheckedItems((prev) => {
