@@ -11,6 +11,7 @@ import Login from "@/pages/Login/Login";
 import AlbumPage from "@/pages/Portfolio/AlbumPage";
 import ImagePage from "@/pages/Portfolio/AlbumPage/ImagesPage";
 import GraphicPage from "@/pages/Portfolio/GraphicPage";
+import GraphicImagePage from "@/pages/Portfolio/GraphicPage/GraphicImagePage";
 import VideoPage from "@/pages/Portfolio/VideoPage";
 import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import TestError from "@/pages/TestError";
@@ -58,6 +59,10 @@ export const routerConfig = createBrowserRouter(
         {
           path: "graphics",
           element: <GraphicPage />,
+        },
+        {
+          path: "graphics/:id/:albumSlug",
+          element: <GraphicImagePage />,
         },
       ],
     },

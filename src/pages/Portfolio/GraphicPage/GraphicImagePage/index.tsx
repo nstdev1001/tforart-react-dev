@@ -1,12 +1,15 @@
 import AddPhotosDialog from "./_components/AddPhotosDialog/AddPhotosDialog";
 import DeletePhotosConfirmDialog from "./_components/DeletePhotosConfirmDialog/DeleteConfirmDialog";
-import FormUpdateAlbumInfo from "./_components/FormUpdateAlbumInfo/FormUpdateAlbumInfo";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Switch } from "@/components/ui/switch";
 import useAuth from "@/hooks/useAuth";
-import useControlAlbum from "@/hooks/useControlAlbum";
-import useImageUploader from "@/pages/Portfolio/AlbumPage/useImageUploader";
+import useControlGraphicProject from "@/hooks/useControlGraphicProject";
+import CustomGapSelector from "@/pages/Portfolio/GraphicPage/GraphicImagePage/_components/CustomGapSelector/CustomGapSelector";
+import FormUpdateProjectInfo from "@/pages/Portfolio/GraphicPage/GraphicImagePage/_components/FormUpdateAlbumInfo/FormUpdateProjectInfo";
+import useGraphicUploader from "@/pages/Portfolio/GraphicPage/useGraphicUploader";
 import { Fragment, useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
@@ -14,7 +17,7 @@ interface HandleCheckboxChange {
   (value: string): void;
 }
 
-const ImagePage = () => {
+const GraphicImagePage = () => {
   const { checkIsLogin } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -22,38 +25,70 @@ const ImagePage = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState<number | null>(
     null
   );
-  const { albums, editAlbumMutation, form } = useControlAlbum();
-  const { photos, deletePhotoMutation } = useImageUploader(id || "");
+  const { projects, editProjectMutation, form } = useControlGraphicProject();
+  const { photos, deletePhotoMutation } = useGraphicUploader(id || "");
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
   const [selectAllChecked, setSelectAllChecked] = useState(false);
-  const [editAlbumInfo, setEditAlbumInfo] = useState<boolean>(false);
+  const [editprojectInfo, setEditprojectInfo] = useState<boolean>(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const albumInfo = albums?.find((data) => data.id === id);
+  const [isRoundedImage, setIsRoundedImage] = useState(true);
+  const [selectedGap, setSelectedGap] = useState<string>("");
+  const projectInfo = projects?.find((data) => data.id === id);
+
+  console.log("projectInfo", projectInfo);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
   useEffect(() => {
-    if (albumInfo) {
-      form.setValue("albumTitle", albumInfo.albumTitle);
-      form.setValue("albumDescription", albumInfo.albumDescription || "");
+    if (projectInfo) {
+      form.setValue("projectTitle", projectInfo.projectTitle);
+      form.setValue("projectDescription", projectInfo.projectDescription || "");
     }
-  }, [albumInfo, form]);
+  }, [projectInfo, form]);
 
-  const handleUpdateAlbumInfo = () => {
-    setEditAlbumInfo(true);
-    if (albumInfo) {
+  const handleUpdateprojectInfo = () => {
+    setEditprojectInfo(true);
+    if (projectInfo) {
       const updatedData = form.getValues();
 
-      editAlbumMutation.mutate({
-        albumId: albumInfo.id,
+      editProjectMutation.mutate({
+        projectId: projectInfo.id,
         updatedData,
-        oldThumbnailUrl: albumInfo.thumbnailUrl,
+        isRoundedImage,
+        selectedGap,
+        oldThumbnailUrl: projectInfo.thumbnailUrl,
       });
+      console.log("Sent data:", { isRoundedImage });
     }
-    setEditAlbumInfo(false);
+    setEditprojectInfo(false);
   };
+
+  const handleRoundedImage = () => {
+    setIsRoundedImage((prev) => {
+      const newValue = !prev;
+
+      if (projectInfo) {
+        editProjectMutation.mutate({
+          projectId: projectInfo.id,
+          updatedData: form.getValues(),
+          isRoundedImage: newValue,
+          selectedGap,
+          oldThumbnailUrl: projectInfo.thumbnailUrl,
+        });
+        console.log("Sent data:", { isRoundedImage: newValue });
+      }
+
+      return newValue;
+    });
+  };
+
+  useEffect(() => {
+    if (projectInfo) {
+      setIsRoundedImage(projectInfo.isRoundedImage || false);
+    }
+  }, [projectInfo]);
 
   const handleCheckboxChange: HandleCheckboxChange = (value) => {
     setCheckedItems((prev) => {
@@ -105,37 +140,37 @@ const ImagePage = () => {
       <Button
         variant={"outline"}
         className="w-[100px]"
-        onClick={() => navigate("/portfolio/photos")}
+        onClick={() => navigate("/portfolio/graphics")}
       >
-        <i className="fa-solid fa-arrow-left-long"></i> Back
+        <i className="fa-solid fa-arrow-left-long"></i> Quay lại
       </Button>
       <div className="title-wrapper flex flex-col items-center gap-3">
-        {!albums ? (
+        {!projects ? (
           <>
             <Skeleton className="w-[400px] h-10 mx-auto" />
             <Skeleton className="w-[200px] h-5 mx-auto mt-3" />
           </>
         ) : (
           <>
-            {editAlbumInfo ? (
-              <FormUpdateAlbumInfo
+            {editprojectInfo ? (
+              <FormUpdateProjectInfo
                 form={form}
-                onSubmit={handleUpdateAlbumInfo}
-                onCancel={() => setEditAlbumInfo(false)}
+                onSubmit={handleUpdateprojectInfo}
+                onCancel={() => setEditprojectInfo(false)}
               />
             ) : (
               <div className="flex flex-col items-center gap-5">
                 <h2
                   className="text-4xl font-semibold max-w-[600px] text-center break-words"
-                  onClick={() => checkIsLogin && setEditAlbumInfo(true)}
+                  onClick={() => checkIsLogin && setEditprojectInfo(true)}
                 >
-                  {albumInfo?.albumTitle}
+                  {projectInfo?.projectTitle}
                 </h2>
                 <p
                   className="max-w-[300px] md:max-w-[500px] lg:max-w-[450px] text-center break-words"
-                  onClick={() => checkIsLogin && setEditAlbumInfo(true)}
+                  onClick={() => checkIsLogin && setEditprojectInfo(true)}
                 >
-                  {albumInfo?.albumDescription}
+                  {projectInfo?.projectDescription}
                 </p>
               </div>
             )}
@@ -171,24 +206,37 @@ const ImagePage = () => {
                 onClick={() => setIsDeleteDialogOpen(true)}
                 disabled={checkedItems.length === 0}
               >
-                <i className="fa-regular fa-trash-can"></i> Delete more
+                <i className="fa-regular fa-trash-can"></i> Xóa nhiều ảnh
               </Button>
             </div>
           </div>
         )}
 
-        <div className="columns-1 sm:columns-2 lg:columns-3 py-10 md:py-20 gap-4">
+        <div className="image_container py-10 md:py-20 gap-4">
+          {checkIsLogin && (
+            <div className="control_grid_button flex gap-5 justify-center items-center mb-5">
+              <div className="Border_button flex items-center gap-2">
+                <Label htmlFor="border-radius">Bo góc</Label>
+                <Switch
+                  id="border-radius"
+                  checked={projectInfo?.isRoundedImage}
+                  onCheckedChange={handleRoundedImage}
+                />
+              </div>
+              <CustomGapSelector
+                gap={projectInfo?.gapImage || ""}
+                onChange={setSelectedGap}
+              />
+            </div>
+          )}
           {!photos
             ? Array.from({ length: skeletonCount }).map((_, index) => (
-                <div className="mb-4 break-inside-avoid" key={index}>
+                <div className="mb-4 mt-5 break-inside-avoid" key={index}>
                   <Skeleton className="w-full h-64 rounded-lg" />
                 </div>
               ))
             : photos.map((photo, index) => (
-                <div
-                  className="mb-4 break-inside-avoid relative"
-                  key={`image ${index}`}
-                >
+                <div className="mb-4 mt-5 relative" key={`image ${index}`}>
                   {checkIsLogin && (
                     <>
                       <Checkbox
@@ -205,11 +253,12 @@ const ImagePage = () => {
                       </Button>
                     </>
                   )}
-
                   <img
                     src={photo}
-                    alt=""
-                    className="w-[500px] object-cover rounded-lg cursor-pointer"
+                    alt="image"
+                    className={`w-full object-cover ${
+                      projectInfo?.isRoundedImage && "rounded-lg"
+                    } ${projectInfo?.gapImage} cursor-pointer`}
                     onClick={() => openFullScreen(index)}
                   />
                 </div>
@@ -268,4 +317,4 @@ const ImagePage = () => {
   );
 };
 
-export default ImagePage;
+export default GraphicImagePage;

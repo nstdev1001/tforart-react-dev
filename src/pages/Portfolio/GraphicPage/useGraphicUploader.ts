@@ -11,7 +11,7 @@ import NProgress from "nprogress";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-const useFirebaseImageUploader = (
+const useGraphicUploader = (
   albumBucket: string,
   setSelectedPhotos?: (photos: File[]) => void
 ) => {
@@ -19,15 +19,14 @@ const useFirebaseImageUploader = (
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
-  const [images, setImages] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
 
   const { data: photos, isLoading } = useQuery<string[]>({
-    queryKey: ["photosCollection", albumBucket],
+    queryKey: ["graphicsCollection", albumBucket],
     queryFn: async () => {
       if (!albumBucket) return [];
-      const imagesRef = ref(storage, `images/${albumBucket}/all`);
+      const imagesRef = ref(storage, `graphics/${albumBucket}/all`);
       const result = await listAll(imagesRef);
 
       return Promise.all(
@@ -43,7 +42,7 @@ const useFirebaseImageUploader = (
   ): Promise<string> => {
     setError(null);
 
-    const storageRef = ref(storage, `images/${albumBucket}/all/${file.name}`);
+    const storageRef = ref(storage, `graphics/${albumBucket}/all/${file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     return new Promise<string>((resolve, reject) => {
@@ -61,7 +60,6 @@ const useFirebaseImageUploader = (
         () => {
           getDownloadURL(storageRef)
             .then((url) => {
-              setImages((prev) => [...prev, url]);
               resolve(url);
             })
             .catch((getUrlError: Error) => {
@@ -84,7 +82,7 @@ const useFirebaseImageUploader = (
       );
     },
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ["photosCollection"] });
+      void queryClient.invalidateQueries({ queryKey: ["graphicsCollection"] });
       NProgress.done();
       toast.success("Upload photos successfully!");
 
@@ -117,7 +115,7 @@ const useFirebaseImageUploader = (
       );
     },
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ["photosCollection"] });
+      void queryClient.invalidateQueries({ queryKey: ["graphicsCollection"] });
       NProgress.done();
       toast.success("Delete album successfully!");
     },
@@ -142,8 +140,6 @@ const useFirebaseImageUploader = (
     toUrlSlug,
     uploadImage,
     uploadProgress,
-    setUploadProgress,
-    images,
     error,
     deletePhotoMutation,
     photos,
@@ -155,4 +151,4 @@ const useFirebaseImageUploader = (
   };
 };
 
-export default useFirebaseImageUploader;
+export default useGraphicUploader;

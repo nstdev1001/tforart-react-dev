@@ -1,10 +1,10 @@
-import useFirebaseImageUploader from "../../../useImageUploader";
 import CompressImageLoading from "@/components/Loading/CompressImageLoading";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { useSelectImages } from "@/hooks/useSelectImages";
+import useGraphicUploader from "@/pages/Portfolio/GraphicPage/useGraphicUploader";
 import { helix } from "ldrs";
 
 helix.register();
@@ -20,7 +20,7 @@ const AddPhotosDialog = ({ albumBucket }: { albumBucket: string }) => {
   } = useSelectImages({ isThumbnail: false });
 
   const { uploadProgress, error, uploadImagesMutation, isOpen, setIsOpen } =
-    useFirebaseImageUploader(albumBucket, setSelectedFiles);
+    useGraphicUploader(albumBucket, setSelectedFiles);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -31,7 +31,7 @@ const AddPhotosDialog = ({ albumBucket }: { albumBucket: string }) => {
       </DialogTrigger>
       <DialogContent className="w-fit !max-w-fit">
         <div className="add-box w-[450px] flex flex-col gap-7">
-          <h1 className="text-center text-2xl">Upload photos to your album</h1>
+          <h1 className="text-center text-2xl">Tải ảnh lên project</h1>
           <div
             className="flex flex-col items-center justify-center w-full max-w-lg mx-auto p-6 border-2 border-dashed border-gray-500 rounded-lg"
             onDrop={handleDrop}
@@ -46,14 +46,14 @@ const AddPhotosDialog = ({ albumBucket }: { albumBucket: string }) => {
               ) : (
                 <>
                   <p className="text-lg text-gray-600 text-center w-52">
-                    Drag and drop your files here to upload
+                    Kéo và thả ảnh vào đây
                   </p>
-                  <span className="text-gray-500 text-sm">- or -</span>
+                  <span className="text-gray-500 text-sm">- hoặc -</span>
                   <label
                     htmlFor="file-upload"
                     className="cursor-pointer px-4 py-2 bg-slate-700 text-white rounded-md hover:bg-slate-600 transition"
                   >
-                    Browse Files
+                    Chọn File
                     <Input
                       id="file-upload"
                       type="file"
@@ -68,7 +68,7 @@ const AddPhotosDialog = ({ albumBucket }: { albumBucket: string }) => {
             </div>
             {selectedFiles.length === 0 ? (
               <div className="text-gray-600 text-center mt-4">
-                No photos selected
+                Chưa có ảnh nào được chọn
               </div>
             ) : (
               <div className="mt-4 w-full">
@@ -85,7 +85,7 @@ const AddPhotosDialog = ({ albumBucket }: { albumBucket: string }) => {
             onClick={() => uploadImagesMutation.mutate(selectedFiles)}
             disabled={selectedFiles.length === 0 || isCompressing}
           >
-            {isCompressing ? "Compressing images..." : "Upload photos"}
+            {isCompressing ? "Đang nén ảnh..." : "Tải ảnh lên"}
           </Button>
           {uploadProgress > 0 && <Progress value={uploadProgress} />}
           <div className="flex flex-col justify-center items-center">

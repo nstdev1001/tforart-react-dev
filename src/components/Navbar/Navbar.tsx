@@ -1,4 +1,5 @@
 import styles from "./Navbar.module.css";
+import Clock from "./_components/Clock";
 import { navbarConfig } from "@/config/navbar_config";
 import useAuth from "@/hooks/useAuth";
 import { Fragment, useEffect, useRef, useState } from "react";
@@ -123,6 +124,11 @@ const Navbar = () => {
             onClick={() => navigate("/")}
           />
         </div>
+      </div>
+
+      {/* time */}
+      <div className={`${styles.timeContainer} block lg:hidden`}>
+        <Clock />
       </div>
 
       {/* overlay */}
