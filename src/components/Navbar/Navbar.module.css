@@ -149,3 +149,11 @@
 .hamburger.open .bar3 {
   transform: translateY(-6.5px) rotate(-45deg);
 }
+
+.timeContainer {
+  position: fixed;
+  right: 0;
+  padding: 16px 16px;
+  cursor: pointer;
+  z-index: 10;
+}
