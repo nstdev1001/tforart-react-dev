@@ -6,9 +6,10 @@ const Footer = () => {
   const navigate = useNavigate();
 
   return (
-    <footer className={`${styles.footerContainer} p-[50px] md:p-[100px]`}>
-      {/* footer content */}
-      <div className="footer-content-wrapper gap-[50px] flex flex-col md:flex-col lg:flex-row justify-around items-center">
+    <footer
+      className={`${styles.footerContainer} p-[50px] md:p-[100px] flex flex-col gap-[50px] md:gap-[80px]`}
+    >
+      <section className="footer-content-wrapper gap-[50px] flex flex-col md:flex-col lg:flex-row justify-around items-center">
         <img
           className="text-white h-[70px] md:h-[90px]"
           src="/tforart-main.png"
@@ -43,35 +44,36 @@ const Footer = () => {
             </Link>
           </div>
         </div>
-      </div>
-      {/* social-icon */}
-      <hr className="w-[90%] mx-auto mt-28" />
-      <div
-        className={`${styles.socialIconWrapper} flex mt-[100px] justify-center gap-10`}
-      >
-        <Link
-          to="https://web.facebook.com/TforartProduction"
-          target="_blank"
-          rel="noreferrer"
+      </section>
+      <hr className="w-[90%] mx-auto" />
+      <section className="flex flex-col gap-5">
+        <div
+          className={`${styles.socialIconWrapper} flex justify-center gap-10`}
         >
-          <i className="fa-brands fa-facebook-f"></i>
-        </Link>
-        <Link to="https://www.instagram.com/" target="_blank">
-          <i className="fa-brands fa-instagram"></i>
-        </Link>
-        <Link to="https://x.com/tforartprod" target="_blank">
-          <i className="fa-brands fa-x-twitter"></i>
-        </Link>
-        <Link to="https://www.youtube.com/@TforartProduction" target="_blank">
-          <i className="fa-brands fa-youtube"></i>
-        </Link>
-        <Link to="" target="_blank">
-          <i className="fa-brands fa-behance"></i>
-        </Link>
-      </div>
-      <p className="text-center text-xs mt-5">
-        © {currentYear} Tforart Production. All Rights Reserved.
-      </p>
+          <Link
+            to="https://web.facebook.com/TforartProduction"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <i className="fa-brands fa-facebook-f"></i>
+          </Link>
+          <Link to="https://www.instagram.com/" target="_blank">
+            <i className="fa-brands fa-instagram"></i>
+          </Link>
+          <Link to="https://x.com/tforartprod" target="_blank">
+            <i className="fa-brands fa-x-twitter"></i>
+          </Link>
+          <Link to="https://www.youtube.com/@TforartProduction" target="_blank">
+            <i className="fa-brands fa-youtube"></i>
+          </Link>
+          <Link to="" target="_blank">
+            <i className="fa-brands fa-behance"></i>
+          </Link>
+        </div>
+        <p className="text-center text-xs">
+          © {currentYear} Tforart Production. All Rights Reserved.
+        </p>
+      </section>
     </footer>
   );
 };
