@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { graphicProjectSchema } from "@/schema/graphicProjectSchema";
 import { GraphicProjectData } from "@/types/graphicDataType";
 import { zodResolver } from "@hookform/resolvers/zod";
