@@ -3,11 +3,17 @@ import DeletePhotosConfirmDialog from "./_components/DeletePhotosConfirmDialog/D
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
 import useAuth from "@/hooks/useAuth";
 import useControlGraphicProject from "@/hooks/useControlGraphicProject";
-import CustomGapSelector from "@/pages/Portfolio/GraphicPage/GraphicImagePage/_components/CustomGapSelector/CustomGapSelector";
 import FormUpdateProjectInfo from "@/pages/Portfolio/GraphicPage/GraphicImagePage/_components/FormUpdateAlbumInfo/FormUpdateProjectInfo";
 import useGraphicUploader from "@/pages/Portfolio/GraphicPage/useGraphicUploader";
 import { Fragment, useEffect, useState } from "react";
@@ -32,10 +38,10 @@ const GraphicImagePage = () => {
   const [editprojectInfo, setEditprojectInfo] = useState<boolean>(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isRoundedImage, setIsRoundedImage] = useState(true);
-  const [selectedGap, setSelectedGap] = useState<string>("");
+  const [selectedGap, setSelectedGap] = useState<string>("mb-4");
   const projectInfo = projects?.find((data) => data.id === id);
 
-  console.log("projectInfo", projectInfo);
+  console.log("projectInfo?.gapImage", projectInfo?.gapImage);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -54,13 +60,11 @@ const GraphicImagePage = () => {
       const updatedData = form.getValues();
 
       editProjectMutation.mutate({
+        ...projectInfo,
         projectId: projectInfo.id,
-        updatedData,
-        isRoundedImage,
-        selectedGap,
         oldThumbnailUrl: projectInfo.thumbnailUrl,
+        updatedData,
       });
-      console.log("Sent data:", { isRoundedImage });
     }
     setEditprojectInfo(false);
   };
@@ -71,22 +75,40 @@ const GraphicImagePage = () => {
 
       if (projectInfo) {
         editProjectMutation.mutate({
+          ...projectInfo,
           projectId: projectInfo.id,
           updatedData: form.getValues(),
-          isRoundedImage: newValue,
-          selectedGap,
           oldThumbnailUrl: projectInfo.thumbnailUrl,
+          isRoundedImage: newValue,
         });
-        console.log("Sent data:", { isRoundedImage: newValue });
       }
 
       return newValue;
     });
   };
 
+  const handleSelectGap = (gap: string) => {
+    setSelectedGap(gap);
+    if (projectInfo) {
+      editProjectMutation.mutate({
+        ...projectInfo,
+        projectId: projectInfo.id,
+        updatedData: form.getValues(),
+        oldThumbnailUrl: projectInfo.thumbnailUrl,
+        gapImage: gap,
+      });
+    }
+  };
+
   useEffect(() => {
     if (projectInfo) {
       setIsRoundedImage(projectInfo.isRoundedImage || false);
+    }
+  }, [projectInfo]);
+
+  useEffect(() => {
+    if (projectInfo) {
+      setSelectedGap(projectInfo.gapImage || "");
     }
   }, [projectInfo]);
 
@@ -217,16 +239,30 @@ const GraphicImagePage = () => {
             <div className="control_grid_button flex gap-5 justify-center items-center mb-5">
               <div className="Border_button flex items-center gap-2">
                 <Label htmlFor="border-radius">Bo góc</Label>
-                <Switch
-                  id="border-radius"
-                  checked={projectInfo?.isRoundedImage}
-                  onCheckedChange={handleRoundedImage}
-                />
+                {projectInfo && (
+                  <Switch
+                    id="border-radius"
+                    checked={isRoundedImage}
+                    onCheckedChange={handleRoundedImage}
+                  />
+                )}
               </div>
-              <CustomGapSelector
-                gap={projectInfo?.gapImage || ""}
-                onChange={setSelectedGap}
-              />
+              <Select
+                value={selectedGap}
+                onValueChange={(value) => {
+                  handleSelectGap(value);
+                }}
+              >
+                <SelectTrigger className="w-[150px]">
+                  <SelectValue placeholder="Khoảng cách" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="mb-0">None</SelectItem>
+                  <SelectItem value="mb-4">12px</SelectItem>
+                  <SelectItem value="mb-5">16px</SelectItem>
+                  <SelectItem value="mb-6">20px</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           )}
           {!photos
@@ -236,7 +272,7 @@ const GraphicImagePage = () => {
                 </div>
               ))
             : photos.map((photo, index) => (
-                <div className="mb-4 mt-5 relative" key={`image ${index}`}>
+                <div className="relative" key={`image ${index}`}>
                   {checkIsLogin && (
                     <>
                       <Checkbox

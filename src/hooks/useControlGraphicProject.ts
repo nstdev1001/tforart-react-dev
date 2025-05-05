@@ -159,14 +159,14 @@ const useControlGraphicProject = () => {
       thumbnailFile,
       oldThumbnailUrl,
       isRoundedImage,
-      selectedGap,
+      gapImage,
     }: {
       projectId: string | undefined;
       updatedData: Partial<GraphicProjectData>;
       thumbnailFile?: File;
       oldThumbnailUrl?: string;
       isRoundedImage?: boolean;
-      selectedGap?: string;
+      gapImage?: string;
     }) => {
       NProgress.start();
       if (projectId) {
@@ -180,9 +180,9 @@ const useControlGraphicProject = () => {
         } else {
           return updateDoc(albumRef, {
             ...updatedData,
-            oldThumbnailUrl,
+            thumbnailUrl: oldThumbnailUrl,
             isRoundedImage,
-            selectedGap,
+            gapImage,
           });
         }
       }
