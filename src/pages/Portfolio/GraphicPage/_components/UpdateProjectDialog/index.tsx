@@ -67,6 +67,7 @@ const UpdateProjectDialog = ({ projectData, isOpen, onClose }: Props) => {
     if (selectedFiles.length > 0) {
       // If a new thumbnail is selected
       editProjectMutation.mutate({
+        ...projectData,
         projectId: projectData?.id,
         updatedData,
         thumbnailFile: selectedFiles[0],
@@ -74,6 +75,7 @@ const UpdateProjectDialog = ({ projectData, isOpen, onClose }: Props) => {
     } else {
       // If no new thumbnail is selected
       editProjectMutation.mutate({
+        ...projectData,
         projectId: projectData?.id,
         updatedData,
         oldThumbnailUrl: projectData?.thumbnailUrl,
