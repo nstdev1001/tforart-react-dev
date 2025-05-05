@@ -41,7 +41,7 @@ const GraphicImagePage = () => {
   const [selectedGap, setSelectedGap] = useState<string>("mb-4");
   const projectInfo = projects?.find((data) => data.id === id);
 
-  console.log("projectInfo", projectInfo);
+  console.log("projectInfo?.gapImage", projectInfo?.gapImage);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -62,6 +62,7 @@ const GraphicImagePage = () => {
       editProjectMutation.mutate({
         ...projectInfo,
         projectId: projectInfo.id,
+        oldThumbnailUrl: projectInfo.thumbnailUrl,
         updatedData,
       });
     }
@@ -77,6 +78,7 @@ const GraphicImagePage = () => {
           ...projectInfo,
           projectId: projectInfo.id,
           updatedData: form.getValues(),
+          oldThumbnailUrl: projectInfo.thumbnailUrl,
           isRoundedImage: newValue,
         });
       }
@@ -92,6 +94,7 @@ const GraphicImagePage = () => {
         ...projectInfo,
         projectId: projectInfo.id,
         updatedData: form.getValues(),
+        oldThumbnailUrl: projectInfo.thumbnailUrl,
         gapImage: gap,
       });
     }
@@ -269,7 +272,7 @@ const GraphicImagePage = () => {
                 </div>
               ))
             : photos.map((photo, index) => (
-                <div className="mb-4 mt-5 relative" key={`image ${index}`}>
+                <div className="relative" key={`image ${index}`}>
                   {checkIsLogin && (
                     <>
                       <Checkbox

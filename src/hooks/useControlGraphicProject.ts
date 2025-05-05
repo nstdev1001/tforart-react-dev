@@ -180,7 +180,7 @@ const useControlGraphicProject = () => {
         } else {
           return updateDoc(albumRef, {
             ...updatedData,
-            oldThumbnailUrl,
+            thumbnailUrl: oldThumbnailUrl,
             isRoundedImage,
             gapImage,
           });
