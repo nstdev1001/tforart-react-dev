@@ -31,7 +31,7 @@ export const useSelectImages = ({
 
   const compressImage = async (file: File): Promise<File> => {
     const options = {
-      maxSizeMB: 1,
+      maxSizeMB: 0.8,
       // maxWidthOrHeight: 800,
       useWebWorker: true,
     };
