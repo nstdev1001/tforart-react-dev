@@ -190,7 +190,7 @@ const useControlGraphicProject = () => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["graphicCollection"] });
       NProgress.done();
-      toast.success("Update project successfully!");
+      // toast.success("Update project successfully!");
     },
     onError: (error) => {
       toast.error("Update project failed! Please try again.");

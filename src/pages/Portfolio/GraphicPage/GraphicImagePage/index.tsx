@@ -1,15 +1,10 @@
 import AddPhotosDialog from "./_components/AddPhotosDialog/AddPhotosDialog";
+import CustomGapSelector from "./_components/CustomGapSelector/CustomGapSelector";
 import DeletePhotosConfirmDialog from "./_components/DeletePhotosConfirmDialog/DeleteConfirmDialog";
+import NoDataWithUploadButton from "@/components/NoData/NoDataWithUploadButton";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
 import useAuth from "@/hooks/useAuth";
@@ -200,106 +195,114 @@ const GraphicImagePage = () => {
         )}
       </div>
       <div className="image-container">
-        {checkIsLogin && (
-          <div className="hidden control-button md:flex justify-between items-center">
-            <DeletePhotosConfirmDialog
-              resetCheckedItems={() => setCheckedItems([])}
-              allData={photos || []}
-              data={checkedItems}
-              isOpen={isDeleteDialogOpen}
-              onClose={() => setIsDeleteDialogOpen(false)}
-              deleteMutation={deletePhotoMutation}
+        {photos && photos.length === 0 ? (
+          <div className="flex flex-col items-center gap-20 mt-10">
+            <NoDataWithUploadButton />
+            <AddPhotosDialog
+              albumBucket={id || ""}
+              className="w-[300px] scale-150"
             />
-            <AddPhotosDialog albumBucket={id || ""} />
-            <div className="flex gap-3 justify-center">
-              <div className="flex items-center space-x-2 border px-3 rounded-md">
-                <Checkbox
-                  disabled={photos?.length === 0}
-                  id="selectAll"
-                  checked={selectAllChecked}
-                  onCheckedChange={handleSelectAllChange}
-                />
-                <label htmlFor="selectAll" className="cursor-pointer">
-                  {selectAllChecked ? "Bỏ chọn tất cả" : "Chọn tất cả"}
-                </label>
-              </div>
-              <Button
-                variant="destructive"
-                onClick={() => setIsDeleteDialogOpen(true)}
-                disabled={checkedItems.length === 0}
-              >
-                <i className="fa-regular fa-trash-can"></i> Xóa nhiều ảnh
-              </Button>
-            </div>
           </div>
-        )}
-
-        <div className="image_container py-10 md:py-20 gap-4">
-          {checkIsLogin && (
-            <div className="control_grid_button flex gap-5 justify-center items-center mb-5">
-              <div className="Border_button flex items-center gap-2">
-                <Label htmlFor="border-radius">Bo góc</Label>
-                {projectInfo && (
-                  <Switch
-                    id="border-radius"
-                    checked={isRoundedImage}
-                    onCheckedChange={handleRoundedImage}
-                  />
-                )}
+        ) : (
+          <>
+            {checkIsLogin && (
+              <div className="hidden control-button md:flex justify-between items-center">
+                <DeletePhotosConfirmDialog
+                  resetCheckedItems={() => setCheckedItems([])}
+                  allData={photos || []}
+                  data={checkedItems}
+                  isOpen={isDeleteDialogOpen}
+                  onClose={() => setIsDeleteDialogOpen(false)}
+                  deleteMutation={deletePhotoMutation}
+                />
+                <AddPhotosDialog albumBucket={id || ""} />
+                <div className="flex gap-3 justify-center">
+                  <div className="flex items-center space-x-2 border px-3 rounded-md">
+                    <Checkbox
+                      disabled={photos?.length === 0}
+                      id="selectAll"
+                      checked={selectAllChecked}
+                      onCheckedChange={handleSelectAllChange}
+                    />
+                    <label htmlFor="selectAll" className="cursor-pointer">
+                      {selectAllChecked ? "Bỏ chọn tất cả" : "Chọn tất cả"}
+                    </label>
+                  </div>
+                  <Button
+                    variant="destructive"
+                    onClick={() => setIsDeleteDialogOpen(true)}
+                    disabled={checkedItems.length === 0}
+                  >
+                    <i className="fa-regular fa-trash-can"></i> Xóa nhiều ảnh
+                  </Button>
+                </div>
               </div>
-              <Select
-                value={selectedGap}
-                onValueChange={(value) => {
-                  handleSelectGap(value);
-                }}
-              >
-                <SelectTrigger className="w-[150px]">
-                  <SelectValue placeholder="Khoảng cách" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="mb-0">None</SelectItem>
-                  <SelectItem value="mb-4">12px</SelectItem>
-                  <SelectItem value="mb-5">16px</SelectItem>
-                  <SelectItem value="mb-6">20px</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          )}
-          {!photos
-            ? Array.from({ length: skeletonCount }).map((_, index) => (
-                <div className="mb-4 mt-5 break-inside-avoid" key={index}>
-                  <Skeleton className="w-full h-64 rounded-lg" />
-                </div>
-              ))
-            : photos.map((photo, index) => (
-                <div className="relative" key={`image ${index}`}>
-                  {checkIsLogin && (
-                    <>
-                      <Checkbox
-                        checked={checkedItems.includes(photo)}
-                        onCheckedChange={() => handleCheckboxChange(photo)}
-                        className="hidden md:block absolute top-3 left-3 border-white bg-black/50"
+            )}
+            <div className="image_container py-10 md:py-20">
+              {checkIsLogin && (
+                <div className="control_grid_button flex gap-6 justify-center items-center mb-5">
+                  <div className="border_button flex items-center gap-2">
+                    <Label htmlFor="border-radius">Bo góc</Label>
+                    {projectInfo && (
+                      <Switch
+                        id="border-radius"
+                        checked={isRoundedImage}
+                        onCheckedChange={handleRoundedImage}
                       />
-                      <Button
-                        variant="destructive"
-                        className="hidden md:block absolute top-3 right-3"
-                        onClick={() => deletePhotoMutation.mutate(photo)}
-                      >
-                        <i className="fa-solid fa-trash"></i>
-                      </Button>
-                    </>
-                  )}
-                  <img
-                    src={photo}
-                    alt="image"
-                    className={`w-full object-cover ${
-                      projectInfo?.isRoundedImage && "rounded-lg"
-                    } ${projectInfo?.gapImage} cursor-pointer`}
-                    onClick={() => openFullScreen(index)}
-                  />
+                    )}
+                  </div>
+                  <div className="gap_button flex items-center gap-2">
+                    <Label htmlFor="gap">Khoảng cách</Label>
+                    <CustomGapSelector
+                      gap={selectedGap}
+                      onChange={(value) => handleSelectGap(value)}
+                    />
+                  </div>
                 </div>
-              ))}
-        </div>
+              )}
+              {!photos
+                ? Array.from({ length: skeletonCount }).map((_, index) => (
+                    <div className="mb-4 mt-5 break-inside-avoid" key={index}>
+                      <Skeleton className="w-full h-64 rounded-lg" />
+                    </div>
+                  ))
+                : photos.map((photo, index) => (
+                    <div className="relative" key={`image ${index}`}>
+                      {checkIsLogin && (
+                        <>
+                          <Checkbox
+                            checked={checkedItems.includes(photo)}
+                            onCheckedChange={() => handleCheckboxChange(photo)}
+                            className="hidden md:block absolute top-3 left-3 border-white bg-black/50"
+                          />
+                          <Button
+                            variant="destructive"
+                            className="hidden md:block absolute top-3 right-3"
+                            onClick={() => deletePhotoMutation.mutate(photo)}
+                          >
+                            <i className="fa-solid fa-trash"></i>
+                          </Button>
+                        </>
+                      )}
+                      <img
+                        src={photo}
+                        alt="image"
+                        className={`w-full object-cover ${
+                          projectInfo?.isRoundedImage && "rounded-lg"
+                        } ${projectInfo?.gapImage} cursor-pointer`}
+                        onClick={() => openFullScreen(index)}
+                      />
+                    </div>
+                  ))}
+            </div>
+            {checkIsLogin && (
+              <AddPhotosDialog
+                albumBucket={id || ""}
+                className="w-[300px] scale-150"
+              />
+            )}
+          </>
+        )}
 
         {currentImageIndex !== null && photos && (
           <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center">

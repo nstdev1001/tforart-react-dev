@@ -9,7 +9,13 @@ import { helix } from "ldrs";
 
 helix.register();
 
-const AddPhotosDialog = ({ albumBucket }: { albumBucket: string }) => {
+const AddPhotosDialog = ({
+  albumBucket,
+  className,
+}: {
+  albumBucket: string;
+  className?: string;
+}) => {
   const {
     selectedFiles,
     handleDrop,
@@ -25,7 +31,11 @@ const AddPhotosDialog = ({ albumBucket }: { albumBucket: string }) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger>
-        <Button variant="default" onClick={() => setIsOpen(true)}>
+        <Button
+          variant="default"
+          onClick={() => setIsOpen(true)}
+          className={className}
+        >
           <i className="fa-solid fa-cloud-arrow-up"></i> Upload photos
         </Button>
       </DialogTrigger>
