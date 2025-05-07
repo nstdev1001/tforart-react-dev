@@ -1,4 +1,4 @@
-const NoDataWithUploadButton = () => {
+const NoData = () => {
   return (
     <img
       src="/no_data_found.svg"
@@ -8,4 +8,4 @@ const NoDataWithUploadButton = () => {
   );
 };
 
-export default NoDataWithUploadButton;
+export default NoData;
