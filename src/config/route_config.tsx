@@ -15,6 +15,7 @@ import GraphicImagePage from "@/pages/Portfolio/GraphicPage/GraphicImagePage";
 import VideoPage from "@/pages/Portfolio/VideoPage";
 import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import TestError from "@/pages/TestError";
+import WeatherApp from "@/pages/Weather";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
 export const routerConfig = createBrowserRouter(
@@ -85,6 +86,10 @@ export const routerConfig = createBrowserRouter(
     {
       path: "/support/faq",
       element: <TforartFAQ />,
+    },
+    {
+      path: "/support/weather",
+      element: <WeatherApp />,
     },
     {
       path: "/developer-info",
