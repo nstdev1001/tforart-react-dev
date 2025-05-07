@@ -154,6 +154,10 @@ export default function WeatherApp() {
           <h1 className="text-3xl md:text-4xl font-bold mb-3">
             Dự báo thời tiết
           </h1>
+          <p className="text-lg text-gray-400">
+            Để đảm bảo dự án của bạn không bị ảnh hưởng bởi thời tiết, hãy kiểm
+            tra dự báo thời tiết tại đây.
+          </p>
         </div>
 
         <div className="mb-8">
