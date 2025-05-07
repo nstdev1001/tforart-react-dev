@@ -11,10 +11,10 @@ helix.register();
 
 const AddPhotosDialog = ({
   albumBucket,
-  className,
+  classNameButton,
 }: {
   albumBucket: string;
-  className?: string;
+  classNameButton?: string;
 }) => {
   const {
     selectedFiles,
@@ -34,7 +34,7 @@ const AddPhotosDialog = ({
         <Button
           variant="default"
           onClick={() => setIsOpen(true)}
-          className={className}
+          className={classNameButton}
         >
           <i className="fa-solid fa-cloud-arrow-up"></i> Upload photos
         </Button>

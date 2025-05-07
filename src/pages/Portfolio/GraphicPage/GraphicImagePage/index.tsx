@@ -1,7 +1,7 @@
 import AddPhotosDialog from "./_components/AddPhotosDialog/AddPhotosDialog";
 import CustomGapSelector from "./_components/CustomGapSelector/CustomGapSelector";
 import DeletePhotosConfirmDialog from "./_components/DeletePhotosConfirmDialog/DeleteConfirmDialog";
-import NoDataWithUploadButton from "@/components/NoData/NoDataWithUploadButton";
+import NoData from "@/components/NoData/NoData";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -197,11 +197,13 @@ const GraphicImagePage = () => {
 
       {photos && photos.length === 0 ? (
         <div className="flex flex-col items-center gap-20 mt-10">
-          <NoDataWithUploadButton />
-          <AddPhotosDialog
-            albumBucket={id || ""}
-            className="w-[300px] scale-150"
-          />
+          <NoData />
+          {checkIsLogin && (
+            <AddPhotosDialog
+              albumBucket={id || ""}
+              classNameButton="w-[300px] scale-150"
+            />
+          )}
         </div>
       ) : (
         <>
@@ -260,6 +262,7 @@ const GraphicImagePage = () => {
                 </div>
               </div>
             )}
+
             {!photos
               ? Array.from({ length: skeletonCount }).map((_, index) => (
                   <div className="mb-4 mt-5 break-inside-avoid" key={index}>
@@ -299,7 +302,7 @@ const GraphicImagePage = () => {
             {checkIsLogin && (
               <AddPhotosDialog
                 albumBucket={id || ""}
-                className="w-[300px] scale-150"
+                classNameButton="w-[300px] scale-150"
               />
             )}
           </div>

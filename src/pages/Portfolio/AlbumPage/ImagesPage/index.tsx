@@ -1,6 +1,7 @@
 import AddPhotosDialog from "./_components/AddPhotosDialog/AddPhotosDialog";
 import DeletePhotosConfirmDialog from "./_components/DeletePhotosConfirmDialog/DeleteConfirmDialog";
 import FormUpdateAlbumInfo from "./_components/FormUpdateAlbumInfo/FormUpdateAlbumInfo";
+import NoData from "@/components/NoData/NoData";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -142,128 +143,141 @@ const ImagePage = () => {
           </>
         )}
       </div>
-      <div className="image-container">
-        {checkIsLogin && (
-          <div className="hidden control-button md:flex justify-between items-center">
-            <DeletePhotosConfirmDialog
-              resetCheckedItems={() => setCheckedItems([])}
-              allData={photos || []}
-              data={checkedItems}
-              isOpen={isDeleteDialogOpen}
-              onClose={() => setIsDeleteDialogOpen(false)}
-              deleteMutation={deletePhotoMutation}
+
+      {photos && photos.length === 0 ? (
+        <div className="flex flex-col items-center gap-20 mt-10">
+          <NoData />
+          {checkIsLogin && (
+            <AddPhotosDialog
+              albumBucket={id || ""}
+              classNameButton="w-[300px] scale-150"
             />
-            <AddPhotosDialog albumBucket={id || ""} />
-            <div className="flex gap-3 justify-center">
-              <div className="flex items-center space-x-2 border px-3 rounded-md">
-                <Checkbox
-                  disabled={photos?.length === 0}
-                  id="selectAll"
-                  checked={selectAllChecked}
-                  onCheckedChange={handleSelectAllChange}
-                />
-                <label htmlFor="selectAll" className="cursor-pointer">
-                  {selectAllChecked ? "Bỏ chọn tất cả" : "Chọn tất cả"}
-                </label>
+          )}
+        </div>
+      ) : (
+        <div className="image-container">
+          {checkIsLogin && (
+            <div className="hidden control-button md:flex justify-between items-center">
+              <DeletePhotosConfirmDialog
+                resetCheckedItems={() => setCheckedItems([])}
+                allData={photos || []}
+                data={checkedItems}
+                isOpen={isDeleteDialogOpen}
+                onClose={() => setIsDeleteDialogOpen(false)}
+                deleteMutation={deletePhotoMutation}
+              />
+              <AddPhotosDialog albumBucket={id || ""} />
+              <div className="flex gap-3 justify-center">
+                <div className="flex items-center space-x-2 border px-3 rounded-md">
+                  <Checkbox
+                    disabled={photos?.length === 0}
+                    id="selectAll"
+                    checked={selectAllChecked}
+                    onCheckedChange={handleSelectAllChange}
+                  />
+                  <label htmlFor="selectAll" className="cursor-pointer">
+                    {selectAllChecked ? "Bỏ chọn tất cả" : "Chọn tất cả"}
+                  </label>
+                </div>
+                <Button
+                  variant="destructive"
+                  onClick={() => setIsDeleteDialogOpen(true)}
+                  disabled={checkedItems.length === 0}
+                >
+                  <i className="fa-regular fa-trash-can"></i> Delete more
+                </Button>
               </div>
+            </div>
+          )}
+
+          <div className="columns-1 sm:columns-2 lg:columns-3 py-10 md:py-20 gap-4">
+            {!photos
+              ? Array.from({ length: skeletonCount }).map((_, index) => (
+                  <div className="mb-4 break-inside-avoid" key={index}>
+                    <Skeleton className="w-full h-64 rounded-lg" />
+                  </div>
+                ))
+              : photos.map((photo, index) => (
+                  <div
+                    className="mb-4 break-inside-avoid relative"
+                    key={`image ${index}`}
+                  >
+                    {checkIsLogin && (
+                      <>
+                        <Checkbox
+                          checked={checkedItems.includes(photo)}
+                          onCheckedChange={() => handleCheckboxChange(photo)}
+                          className="hidden md:block absolute top-3 left-3 border-white bg-black/50"
+                        />
+                        <Button
+                          variant="destructive"
+                          className="hidden md:block absolute top-3 right-3"
+                          onClick={() => deletePhotoMutation.mutate(photo)}
+                        >
+                          <i className="fa-solid fa-trash"></i>
+                        </Button>
+                      </>
+                    )}
+
+                    <img
+                      src={photo}
+                      alt=""
+                      className="w-[500px] object-cover rounded-lg cursor-pointer"
+                      onClick={() => openFullScreen(index)}
+                    />
+                  </div>
+                ))}
+          </div>
+
+          {currentImageIndex !== null && photos && (
+            <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center">
               <Button
-                variant="destructive"
-                onClick={() => setIsDeleteDialogOpen(true)}
-                disabled={checkedItems.length === 0}
+                variant="ghost"
+                className="absolute top-4 right-4 text-white hover:text-gray-300"
+                onClick={closeFullScreen}
               >
-                <i className="fa-regular fa-trash-can"></i> Delete more
+                <i className="fa-solid fa-xmark text-2xl"></i>
+              </Button>
+
+              <Button
+                variant="ghost"
+                className="w-10 h-10 absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 disabled:opacity-50 rounded-full"
+                onClick={goToPrevious}
+                disabled={currentImageIndex === 0}
+              >
+                <i className="fa-solid fa-chevron-left text-3xl"></i>
+              </Button>
+
+              {/* Container cho ảnh và checkbox */}
+              <div className="relative inline-block">
+                <img
+                  src={photos[currentImageIndex]}
+                  alt={`image ${currentImageIndex + 1}`}
+                  className="max-h-[90vh] max-w-[90vw] object-contain rounded-lg"
+                />
+                {checkIsLogin && (
+                  <Checkbox
+                    checked={checkedItems.includes(photos[currentImageIndex])}
+                    onCheckedChange={() =>
+                      handleCheckboxChange(photos[currentImageIndex])
+                    }
+                    className="absolute top-3 left-3 z-50 w-5 h-5 border-white bg-black/50"
+                  />
+                )}
+              </div>
+
+              <Button
+                variant="ghost"
+                className="w-10 h-10 absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 disabled:opacity-50 rounded-full"
+                onClick={goToNext}
+                disabled={currentImageIndex === photos.length - 1}
+              >
+                <i className="fa-solid fa-chevron-right text-3xl"></i>
               </Button>
             </div>
-          </div>
-        )}
-
-        <div className="columns-1 sm:columns-2 lg:columns-3 py-10 md:py-20 gap-4">
-          {!photos
-            ? Array.from({ length: skeletonCount }).map((_, index) => (
-                <div className="mb-4 break-inside-avoid" key={index}>
-                  <Skeleton className="w-full h-64 rounded-lg" />
-                </div>
-              ))
-            : photos.map((photo, index) => (
-                <div
-                  className="mb-4 break-inside-avoid relative"
-                  key={`image ${index}`}
-                >
-                  {checkIsLogin && (
-                    <>
-                      <Checkbox
-                        checked={checkedItems.includes(photo)}
-                        onCheckedChange={() => handleCheckboxChange(photo)}
-                        className="hidden md:block absolute top-3 left-3 border-white bg-black/50"
-                      />
-                      <Button
-                        variant="destructive"
-                        className="hidden md:block absolute top-3 right-3"
-                        onClick={() => deletePhotoMutation.mutate(photo)}
-                      >
-                        <i className="fa-solid fa-trash"></i>
-                      </Button>
-                    </>
-                  )}
-
-                  <img
-                    src={photo}
-                    alt=""
-                    className="w-[500px] object-cover rounded-lg cursor-pointer"
-                    onClick={() => openFullScreen(index)}
-                  />
-                </div>
-              ))}
+          )}
         </div>
-
-        {currentImageIndex !== null && photos && (
-          <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center">
-            <Button
-              variant="ghost"
-              className="absolute top-4 right-4 text-white hover:text-gray-300"
-              onClick={closeFullScreen}
-            >
-              <i className="fa-solid fa-xmark text-2xl"></i>
-            </Button>
-
-            <Button
-              variant="ghost"
-              className="w-10 h-10 absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 disabled:opacity-50 rounded-full"
-              onClick={goToPrevious}
-              disabled={currentImageIndex === 0}
-            >
-              <i className="fa-solid fa-chevron-left text-3xl"></i>
-            </Button>
-
-            {/* Container cho ảnh và checkbox */}
-            <div className="relative inline-block">
-              <img
-                src={photos[currentImageIndex]}
-                alt={`image ${currentImageIndex + 1}`}
-                className="max-h-[90vh] max-w-[90vw] object-contain rounded-lg"
-              />
-              {checkIsLogin && (
-                <Checkbox
-                  checked={checkedItems.includes(photos[currentImageIndex])}
-                  onCheckedChange={() =>
-                    handleCheckboxChange(photos[currentImageIndex])
-                  }
-                  className="absolute top-3 left-3 z-50 w-5 h-5 border-white bg-black/50"
-                />
-              )}
-            </div>
-
-            <Button
-              variant="ghost"
-              className="w-10 h-10 absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 disabled:opacity-50 rounded-full"
-              onClick={goToNext}
-              disabled={currentImageIndex === photos.length - 1}
-            >
-              <i className="fa-solid fa-chevron-right text-3xl"></i>
-            </Button>
-          </div>
-        )}
-      </div>
+      )}
     </Fragment>
   );
 };
