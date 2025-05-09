@@ -9,15 +9,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  Cloud,
-  CloudFog,
-  CloudLightning,
-  CloudRain,
-  CloudSnow,
+  // Cloud,
+  // CloudFog,
+  // CloudLightning,
+  // CloudRain,
+  // CloudSnow,
   Droplets,
-  Sun,
+  // Sun,
   Wind,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function WeatherApp() {
   const {
@@ -33,19 +34,68 @@ export default function WeatherApp() {
   const getWeatherIcon = (weatherCode: number): JSX.Element => {
     switch (true) {
       case weatherCode >= 200 && weatherCode < 300:
-        return <CloudLightning className="h-10 w-10" />;
+        // return <CloudLightning className="h-14 w-14" />;
+        return (
+          <img
+            alt="thunderstorm"
+            src="/weather-icon/storm-unscreen.gif"
+            className="h-14 w-14"
+          />
+        );
       case weatherCode >= 300 && weatherCode < 400:
-        return <CloudRain className="h-10 w-10 opacity-70" />;
+        // return <CloudRain className="h-14 w-14 opacity-70" />;
+        return (
+          <img
+            alt="drizzle"
+            src="/weather-icon/moderate-rain-unscreen.gif"
+            className="h-14 w-14"
+          />
+        );
       case weatherCode >= 500 && weatherCode < 600:
-        return <CloudRain className="h-10 w-10" />;
+        // return <CloudRain className="h-14 w-14" />;
+        return (
+          <img
+            alt="light rain"
+            src="/weather-icon/rain-unscreen.gif"
+            className="h-14 w-14"
+          />
+        );
       case weatherCode >= 600 && weatherCode < 700:
-        return <CloudSnow className="h-10 w-10" />;
+        // return <CloudSnow className="h-14 w-14" />;
+        return (
+          <img
+            alt="snow"
+            src="/weather-icon/cloud-snow.gif"
+            className="h-14 w-14"
+          />
+        );
       case weatherCode >= 700 && weatherCode < 800:
-        return <CloudFog className="h-10 w-10" />;
+        // return <CloudFog className="h-14 w-14" />;
+        return (
+          <img
+            alt="cloudy"
+            src="/weather-icon/cloudy.gif"
+            className="h-14 w-14"
+          />
+        );
       case weatherCode === 800:
-        return <Sun className="h-10 w-10 text-yellow-400" />;
+        // return <Sun className="h-14 w-14 text-yellow-400" />;
+        return (
+          <img
+            alt="sun"
+            src="/weather-icon/sun-default-unscreen.gif"
+            className="h-14 w-14"
+          />
+        );
       default:
-        return <Cloud className="h-10 w-10" />;
+        // return <Cloud className="h-14 w-14" />;
+        return (
+          <img
+            alt="cloudy"
+            src="/weather-icon/cloudy.gif"
+            className="h-14 w-14"
+          />
+        );
     }
   };
 
@@ -105,7 +155,7 @@ export default function WeatherApp() {
         {!loading && !error && weatherData && (
           <>
             {/* Current Weather */}
-            <Card className="mb-8 bg-gray-900 border-gray-700">
+            <Card className="mb-8 bg-transparent border-gray-700">
               <CardHeader>
                 <CardTitle className="text-xl">
                   {vietnamCities.find((c) => c.value === city)?.name || city} -
@@ -124,23 +174,43 @@ export default function WeatherApp() {
                     </p>
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-x-12 gap-y-2">
+                <div className="grid grid-cols-2 gap-x-12 gap-y-2 lg:scale-125">
                   <div className="flex items-center">
-                    <Droplets className="mr-2 h-5 w-5 text-blue-400" />
+                    {/* <Droplets className="mr-2 h-5 w-5 text-blue-400" /> */}
+                    <img
+                      alt="humidity"
+                      src="/weather-icon/drop-unscreen.gif"
+                      className="mr-2 h-5 w-5"
+                    />
                     <span>{weatherData.main.humidity}% độ ẩm</span>
                   </div>
                   <div className="flex items-center">
-                    <Wind className="mr-2 h-5 w-5 text-green-400" />
+                    {/* <Wind className="mr-2 h-5 w-5 text-green-400" /> */}
+                    <img
+                      alt="wind"
+                      src="/weather-icon/wind-unscreen.gif"
+                      className="mr-2 h-5 w-5"
+                    />
                     <span>{Math.round(weatherData.wind.speed * 3.6)} km/h</span>
                   </div>
                   <div className="flex items-center">
-                    <Sun className="mr-2 h-5 w-5 text-yellow-400" />
+                    {/* <Sun className="mr-2 h-5 w-5 text-yellow-400" /> */}
+                    <img
+                      alt="feels like"
+                      src="/weather-icon/sun-glass-unscreen.gif"
+                      className="mr-2 h-5 w-5"
+                    />
                     <span>
                       Cảm giác: {Math.round(weatherData.main.feels_like)}°C
                     </span>
                   </div>
                   <div className="flex items-center">
-                    <Cloud className="mr-2 h-5 w-5 text-gray-400" />
+                    {/* <Cloud className="mr-2 h-5 w-5 text-gray-400" /> */}
+                    <img
+                      alt="clouds"
+                      src="/weather-icon/cloudy.gif"
+                      className="mr-2 h-5 w-5"
+                    />
                     <span>{weatherData.clouds.all}% mây</span>
                   </div>
                 </div>
@@ -153,7 +223,7 @@ export default function WeatherApp() {
               {forecast.map((day, index) => (
                 <Card
                   key={index}
-                  className="bg-gray-900 border-gray-700 hover:bg-gray-800 transition-colors"
+                  className="bg-gray-950 border-gray-700 hover:bg-gray-900 transition-colors"
                 >
                   <CardHeader className="pb-2">
                     <CardTitle className="text-base">
@@ -162,7 +232,7 @@ export default function WeatherApp() {
                   </CardHeader>
                   <CardContent>
                     <div className="flex items-center justify-between">
-                      <div className="flex flex-col items-center">
+                      <div className="flex flex-col items-start">
                         {getWeatherIcon(day.weather[0].id)}
                         <p className="text-sm mt-1 capitalize">
                           {day.weather[0].description}
@@ -192,12 +262,20 @@ export default function WeatherApp() {
                 </Card>
               ))}
             </div>
+            <footer className="mt-12 text-center text-gray-500 text-sm">
+              <p>
+                Dữ liệu thời tiết được cung cấp bởi{" "}
+                <Link
+                  className="underline"
+                  target="_blank"
+                  to={"https://openweathermap.org/"}
+                >
+                  OpenWeatherMap
+                </Link>
+              </p>
+            </footer>
           </>
         )}
-
-        {/* <footer className="mt-12 text-center text-gray-400 text-sm">
-          <p>Dữ liệu thời tiết cung cấp bởi OpenWeatherMap</p>
-        </footer> */}
       </div>
     </Layout>
   );
