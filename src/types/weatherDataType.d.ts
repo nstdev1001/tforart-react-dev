@@ -44,31 +44,55 @@ export interface WeatherData {
 }
 
 export interface ForecastItem {
-  dt: number;
+  dt: number; // Thời gian (timestamp)
   main: {
-    temp: number;
-    feels_like: number;
-    temp_min: number;
-    temp_max: number;
-    pressure: number;
-    humidity: number;
+    temp: number; // Nhiệt độ hiện tại
+    feels_like: number; // Nhiệt độ cảm giác
+    temp_min: number; // Nhiệt độ thấp nhất
+    temp_max: number; // Nhiệt độ cao nhất
+    pressure: number; // Áp suất
+    sea_level?: number; // Áp suất mực nước biển (tùy chọn)
+    grnd_level?: number; // Áp suất mặt đất (tùy chọn)
+    humidity: number; // Độ ẩm
+    temp_kf?: number; // Hệ số nhiệt độ (tùy chọn)
   };
   weather: {
-    id: number;
-    main: string;
-    description: string;
-    icon: string;
+    id: number; // Mã thời tiết
+    main: string; // Loại thời tiết (ví dụ: Rain, Clouds)
+    description: string; // Mô tả thời tiết
+    icon: string; // Mã icon thời tiết
   }[];
   clouds: {
-    all: number;
+    all: number; // Phần trăm mây che phủ
   };
   wind: {
-    speed: number;
-    deg: number;
+    speed: number; // Tốc độ gió (m/s)
+    deg: number; // Hướng gió (độ)
+    gust?: number; // Gió giật (tùy chọn)
   };
-  visibility: number;
+  visibility: number; // Tầm nhìn (mét)
   pop: number; // Xác suất mưa
+  rain?: {
+    "3h": number; // Lượng mưa trong 3 giờ (tùy chọn)
+  };
+  sys: {
+    pod: string; // Phân biệt ngày/đêm (d: ngày, n: đêm)
+  };
+  dt_txt: string; // Thời gian dạng chuỗi (ISO 8601)
 }
 
-// Kiểu dữ liệu cho danh sách dự báo
-type Forecast = ForecastItem[];
+export interface ForecastData {
+  cod: string;
+  message: number;
+  cnt: number;
+  list: ForecastItem[];
+  city: {
+    id: number; // ID thành phố
+    name: string; // Tên thành phố
+    coord: {
+      lat: number; // Vĩ độ
+      lon: number; // Kinh độ
+    };
+    country: string; // Quốc gia
+  };
+}

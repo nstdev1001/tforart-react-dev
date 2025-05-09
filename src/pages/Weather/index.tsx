@@ -1,3 +1,4 @@
+import useControlWeather from "./useControlWeather";
 import Layout from "@/components/Layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -7,7 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Forecast, WeatherData } from "@/types/weatherDataType";
 import {
   Cloud,
   CloudFog,
@@ -18,109 +18,17 @@ import {
   Sun,
   Wind,
 } from "lucide-react";
-import { useEffect, useState } from "react";
 
 export default function WeatherApp() {
-  const [city, setCity] = useState<string>("Hanoi");
-  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
-  const [forecast, setForecast] = useState<Forecast>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  console.log("weatherData", weatherData);
-  console.log("forecast", forecast);
-
-  // const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
-  const API_KEY = "178e01aac37f143722e1bd21f3ce7885";
-
-  const vietnamCities = [
-    { name: "Hà Nội", value: "Hanoi" },
-    { name: "Hồ Chí Minh", value: "Ho Chi Minh City" },
-    { name: "Đà Nẵng", value: "Da Nang" },
-    { name: "Hải Phòng", value: "Hai Phong" },
-    { name: "Cần Thơ", value: "Can Tho" },
-    { name: "Huế", value: "Hue" },
-    { name: "Nha Trang", value: "Nha Trang" },
-    { name: "Đà Lạt", value: "Da Lat" },
-    { name: "Vũng Tàu", value: "Vung Tau" },
-    { name: "Hạ Long", value: "Ha Long" },
-  ];
-
-  useEffect(() => {
-    const fetchWeather = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        // Fetch current weather
-        const currentWeatherResponse = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`
-        );
-
-        if (!currentWeatherResponse.ok) {
-          throw new Error("Failed to fetch current weather data");
-        }
-
-        const currentWeatherData: WeatherData =
-          await currentWeatherResponse.json();
-        setWeatherData(currentWeatherData);
-
-        // Fetch 7-day forecast
-        const forecastResponse = await fetch(
-          `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${API_KEY}`
-        );
-
-        if (!forecastResponse.ok) {
-          throw new Error("Failed to fetch forecast data");
-        }
-
-        const forecastData = await forecastResponse.json();
-
-        // Process 5-day forecast (API provides data every 3 hours)
-        // Group by day and take the middle of the day entry (noon)
-        const dailyForecasts = {};
-
-        forecastData.list.forEach((item: WeatherData) => {
-          const date = new Date(item.dt * 1000);
-          const day = date.toISOString().split("T")[0];
-
-          if (!dailyForecasts[day]) {
-            dailyForecasts[day] = [];
-          }
-
-          dailyForecasts[day].push(item);
-        });
-
-        // Get one entry per day (preferably around noon)
-        const processedForecast = Object.keys(dailyForecasts).map((day) => {
-          const entries = dailyForecasts[day];
-          // Try to find entry closest to noon
-          let bestEntry = entries[0];
-          let minDiff = Infinity;
-
-          entries.forEach((entry) => {
-            const date = new Date(entry.dt * 1000);
-            const hoursDiff = Math.abs(date.getHours() - 12);
-            if (hoursDiff < minDiff) {
-              minDiff = hoursDiff;
-              bestEntry = entry;
-            }
-          });
-
-          return bestEntry;
-        });
-
-        // Limit to 7 days
-        setForecast(processedForecast.slice(0, 7));
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
-
-    fetchWeather();
-  }, [city]);
+  const {
+    city,
+    weatherData,
+    error,
+    forecast,
+    vietnamCities,
+    loading,
+    setCity,
+  } = useControlWeather();
 
   const getWeatherIcon = (weatherCode: number): JSX.Element => {
     switch (true) {
@@ -145,15 +53,15 @@ export default function WeatherApp() {
     const date = new Date(timestamp * 1000);
     return date.toLocaleDateString("vi-VN", {
       weekday: "short",
-      month: "short",
-      day: "numeric",
+      month: "long",
+      day: "2-digit",
     });
   };
 
   return (
     <Layout>
       <div className="weather-container max-w-[1200px] p-[20px] md:p-[50px] pt-[70px] md:pt-[100px] lg:pt-[150px] mx-auto">
-        <div className="text-center mb-12">
+        <div className="text-center mb-20">
           <h1 className="text-3xl md:text-4xl font-bold mb-3">
             Dự báo thời tiết
           </h1>
@@ -201,7 +109,7 @@ export default function WeatherApp() {
               <CardHeader>
                 <CardTitle className="text-xl">
                   {vietnamCities.find((c) => c.value === city)?.name || city} -
-                  Hiện tại
+                  hiện tại
                 </CardTitle>
               </CardHeader>
               <CardContent className="flex flex-col md:flex-row justify-between items-center">
@@ -241,7 +149,7 @@ export default function WeatherApp() {
 
             {/* 7-day Forecast */}
             <h2 className="text-2xl font-bold mb-4">Dự báo 7 ngày tới</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {forecast.map((day, index) => (
                 <Card
                   key={index}
@@ -287,9 +195,9 @@ export default function WeatherApp() {
           </>
         )}
 
-        <footer className="mt-12 text-center text-gray-400 text-sm">
+        {/* <footer className="mt-12 text-center text-gray-400 text-sm">
           <p>Dữ liệu thời tiết cung cấp bởi OpenWeatherMap</p>
-        </footer>
+        </footer> */}
       </div>
     </Layout>
   );
