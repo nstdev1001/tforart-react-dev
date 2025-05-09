@@ -127,7 +127,10 @@ const Navbar = () => {
       </div>
 
       {/* time */}
-      <div className={`${styles.timeContainer} block lg:hidden`}>
+      <div
+        className={`${styles.timeContainer} block lg:hidden`}
+        onClick={() => navigate("/support/weather")}
+      >
         <Clock />
       </div>
 
