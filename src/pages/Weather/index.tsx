@@ -118,15 +118,20 @@ export default function WeatherApp() {
           <p className="text-lg text-gray-400">
             Để đảm bảo dự án của bạn không bị ảnh hưởng bởi thời tiết, hãy kiểm
             tra dự báo thời tiết tại đây.
+            <br />
+            <span className="font-extralight">
+              Bạn yên tâm, thời tiết do TFORART cung cấp cực chuẩn và uy tín!
+            </span>
           </p>
         </div>
 
         <div className="mb-8">
+          <h2 className="font-semibold mb-2">Chọn thành phố:</h2>
           <Select value={city} onValueChange={setCity}>
-            <SelectTrigger className="w-full md:w-72 bg-gray-900 border-gray-700">
+            <SelectTrigger className="w-full md:w-72 bg-black border-gray-700">
               <SelectValue placeholder="Chọn thành phố" />
             </SelectTrigger>
-            <SelectContent className="bg-gray-900 border-gray-700 text-white">
+            <SelectContent className="bg-gray-950 border-gray-700 text-white">
               {vietnamCities.map((city) => (
                 <SelectItem
                   key={city.value}
