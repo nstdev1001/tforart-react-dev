@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import Layout from "@/components/Layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -10,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Forecast, WeatherData } from "@/types/weatherDataType";
 import {
   Cloud,
   CloudFog,
@@ -23,13 +21,17 @@ import {
 import { useEffect, useState } from "react";
 
 export default function WeatherApp() {
-  const [city, setCity] = useState("Hanoi");
-  const [weatherData, setWeatherData] = useState(null);
-  const [forecast, setForecast] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [city, setCity] = useState<string>("Hanoi");
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+  const [forecast, setForecast] = useState<Forecast>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
+  console.log("weatherData", weatherData);
+  console.log("forecast", forecast);
+
+  // const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
+  const API_KEY = "178e01aac37f143722e1bd21f3ce7885";
 
   const vietnamCities = [
     { name: "Hà Nội", value: "Hanoi" },
@@ -59,7 +61,8 @@ export default function WeatherApp() {
           throw new Error("Failed to fetch current weather data");
         }
 
-        const currentWeatherData = await currentWeatherResponse.json();
+        const currentWeatherData: WeatherData =
+          await currentWeatherResponse.json();
         setWeatherData(currentWeatherData);
 
         // Fetch 7-day forecast
@@ -77,7 +80,7 @@ export default function WeatherApp() {
         // Group by day and take the middle of the day entry (noon)
         const dailyForecasts = {};
 
-        forecastData.list.forEach((item) => {
+        forecastData.list.forEach((item: WeatherData) => {
           const date = new Date(item.dt * 1000);
           const day = date.toISOString().split("T")[0];
 
@@ -119,26 +122,26 @@ export default function WeatherApp() {
     fetchWeather();
   }, [city]);
 
-  const getWeatherIcon = (weatherCode) => {
-    // Map weather codes to icons
-    if (weatherCode >= 200 && weatherCode < 300) {
-      return <CloudLightning className="h-10 w-10" />;
-    } else if (weatherCode >= 300 && weatherCode < 400) {
-      return <CloudRain className="h-10 w-10 opacity-70" />;
-    } else if (weatherCode >= 500 && weatherCode < 600) {
-      return <CloudRain className="h-10 w-10" />;
-    } else if (weatherCode >= 600 && weatherCode < 700) {
-      return <CloudSnow className="h-10 w-10" />;
-    } else if (weatherCode >= 700 && weatherCode < 800) {
-      return <CloudFog className="h-10 w-10" />;
-    } else if (weatherCode === 800) {
-      return <Sun className="h-10 w-10 text-yellow-400" />;
-    } else {
-      return <Cloud className="h-10 w-10" />;
+  const getWeatherIcon = (weatherCode: number): JSX.Element => {
+    switch (true) {
+      case weatherCode >= 200 && weatherCode < 300:
+        return <CloudLightning className="h-10 w-10" />;
+      case weatherCode >= 300 && weatherCode < 400:
+        return <CloudRain className="h-10 w-10 opacity-70" />;
+      case weatherCode >= 500 && weatherCode < 600:
+        return <CloudRain className="h-10 w-10" />;
+      case weatherCode >= 600 && weatherCode < 700:
+        return <CloudSnow className="h-10 w-10" />;
+      case weatherCode >= 700 && weatherCode < 800:
+        return <CloudFog className="h-10 w-10" />;
+      case weatherCode === 800:
+        return <Sun className="h-10 w-10 text-yellow-400" />;
+      default:
+        return <Cloud className="h-10 w-10" />;
     }
   };
 
-  const formatDate = (timestamp) => {
+  const formatDate = (timestamp: number): string => {
     const date = new Date(timestamp * 1000);
     return date.toLocaleDateString("vi-VN", {
       weekday: "short",
