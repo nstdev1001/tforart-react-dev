@@ -21,12 +21,13 @@ const AddPhotosDialog = ({
     handleDrop,
     handleDragOver,
     handleFileChange,
-    setSelectedFiles,
     isCompressing,
-  } = useSelectImages({ isThumbnail: false });
+  } = useSelectImages({ isThumbnail: true });
 
   const { uploadProgress, error, uploadImagesMutation, isOpen, setIsOpen } =
-    useGraphicUploader(albumBucket, setSelectedFiles);
+    useGraphicUploader(albumBucket);
+
+  const fileName = selectedFiles.map((file) => file.name);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -67,7 +68,7 @@ const AddPhotosDialog = ({
                     <Input
                       id="file-upload"
                       type="file"
-                      multiple
+                      // multiple
                       accept="image/*,video/*"
                       className="hidden"
                       onChange={handleFileChange}
@@ -83,7 +84,9 @@ const AddPhotosDialog = ({
             ) : (
               <div className="mt-4 w-full">
                 <h4 className="text-gray-700 font-medium">
-                  Đã chọn {selectedFiles.length} ảnh
+                  {fileName.length > 1
+                    ? `Đã chọn ${fileName.length} ảnh`
+                    : `Đã chọn file: ${fileName[0]}`}
                 </h4>
               </div>
             )}

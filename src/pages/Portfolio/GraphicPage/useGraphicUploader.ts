@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   deleteObject,
   getDownloadURL,
+  getMetadata,
   getStorage,
   listAll,
   ref,
@@ -11,10 +12,7 @@ import NProgress from "nprogress";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-const useGraphicUploader = (
-  albumBucket: string,
-  setSelectedPhotos?: (photos: File[]) => void
-) => {
+const useGraphicUploader = (albumBucket: string) => {
   const storage = getStorage();
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
@@ -26,12 +24,32 @@ const useGraphicUploader = (
     queryKey: ["graphicsCollection", albumBucket],
     queryFn: async () => {
       if (!albumBucket) return [];
+
       const imagesRef = ref(storage, `graphics/${albumBucket}/all`);
       const result = await listAll(imagesRef);
 
-      return Promise.all(
-        result.items.map((itemRef) => getDownloadURL(itemRef))
+      const filesWithMetadata = await Promise.all(
+        result.items.map(async (itemRef) => {
+          const [url, metadata] = await Promise.all([
+            getDownloadURL(itemRef),
+            getMetadata(itemRef),
+          ]);
+          return {
+            url,
+            timeCreated: new Date(metadata.timeCreated), // Convert to Date for sorting
+          };
+        })
       );
+
+      console.log("filesWithMetadata", filesWithMetadata);
+
+      // Sort by timeCreated ascending (oldest first, newest last)
+      filesWithMetadata.sort(
+        (a, b) => a.timeCreated.getTime() - b.timeCreated.getTime()
+      );
+
+      // Return only the URLs
+      return filesWithMetadata.map((file) => file.url);
     },
     enabled: !!albumBucket,
   });
@@ -85,11 +103,6 @@ const useGraphicUploader = (
       void queryClient.invalidateQueries({ queryKey: ["graphicsCollection"] });
       NProgress.done();
       toast.success("Upload photos successfully!");
-
-      if (setSelectedPhotos) {
-        setSelectedPhotos([]);
-      }
-
       setIsOpen(false);
       setUploadProgress(0);
     },

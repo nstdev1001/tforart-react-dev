@@ -220,7 +220,12 @@ const CustomForm = () => {
               </FormItem>
             )}
           />
-
+          <FormLabel className="text-sm text-gray-500">
+            Tham khảo thông tin thời tiết cho dự án của bạn?{" "}
+            <Link to="/support/weather" className="text-gray-300 underline">
+              Xem ngay
+            </Link>
+          </FormLabel>
           {/* Submit Button */}
           <Button
             className="group w-full rounded-full"
@@ -228,10 +233,10 @@ const CustomForm = () => {
             variant="outline"
             disabled={isLoading}
           >
-            Gửi thông tin{" "}
+            Gửi thông tin
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </Button>
-          <div className="text-center text-sm text-gray-500">
+          {/* <div className="text-center text-sm text-gray-500">
             Bằng cách nhấp vào nút gửi, bạn đồng ý với{" "}
             <Link
               to="/privacy-policy"
@@ -248,7 +253,7 @@ const CustomForm = () => {
             >
               Chính sách bảo mật
             </Link>
-          </div>
+          </div> */}
         </form>
       </Form>
     </div>

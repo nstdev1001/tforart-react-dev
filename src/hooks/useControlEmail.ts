@@ -25,7 +25,6 @@ const useControlEmail = () => {
     mutationFn: async () => {
       NProgress.start();
       const formValues = form.getValues();
-      console.log("formValues", formValues);
 
       return await emailjs.send(
         emailjsConfig.serviceId,
