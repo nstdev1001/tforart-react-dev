@@ -36,8 +36,6 @@ const GraphicImagePage = () => {
   const [selectedGap, setSelectedGap] = useState<string>("mb-4");
   const projectInfo = projects?.find((data) => data.id === id);
 
-  console.log("projectInfo?.gapImage", projectInfo?.gapImage);
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);

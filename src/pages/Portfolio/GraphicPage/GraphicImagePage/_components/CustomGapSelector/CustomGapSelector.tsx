@@ -12,7 +12,6 @@ interface Props {
 }
 
 const CustomGapSelector = ({ gap, onChange }: Props) => {
-  console.log("gap", gap);
   return (
     <Select
       value={gap}
