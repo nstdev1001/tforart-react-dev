@@ -7,12 +7,11 @@
 
 .card {
   width: 80px;
-  border-radius: 0.75rem;
+  border-radius: 2rem;
   background-size: cover;
   background-position: center;
   cursor: pointer;
   overflow: hidden;
-  border-radius: 2rem;
   margin: 0 10px;
   display: flex;
   align-items: center;
@@ -37,29 +36,13 @@
   top: 380px;
   right: 20px;
   text-shadow: 0px 10px 30px -5px rgba(0, 0, 0, 1);
+  transition: opacity 0.5s ease-in-out;
 }
 
-input {
-  display: none;
-}
-
-input:checked + .card {
+.expanded {
   width: 1200px;
 }
 
-input:checked + .card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 50%; /* Start the gradient effect from the middle */
-  pointer-events: none;
-  transition: all 0.3s ease;
-}
-
-input:checked + .card .cardContent {
-  opacity: 100;
-  pointer-events: none;
-  transition: opacity 0.5s ease-in-out;
+.show {
+  opacity: 1;
 }
