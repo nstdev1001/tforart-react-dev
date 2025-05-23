@@ -198,16 +198,22 @@ const UpdateProjectDialog = ({ projectData, isOpen, onClose }: Props) => {
                 className="w-full h-auto object-cover"
               />
             ) : (
-              <p className="text-gray-600">Chưa có ảnh để hiển thị</p>
+              <p className="text-gray-600 absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%]">
+                Chưa có ảnh để hiển thị
+              </p>
             )}
-            <div className="overlay">
-              <h3 className="title">{projectTitle}</h3>
-            </div>
           </div>
-          <div className="preview-description max-w-[350px]">
-            <h3 className="text-center font-bold">Mô tả: </h3>
-            <p className="max-w-[350px] break-words">
-              {watch("projectDescription")}
+          <h3 className="title text-xl font-semibold text-center max-w-[384px] overflow-hidden text-ellipsis">
+            {projectTitle}
+          </h3>
+          <div className="preview-description max-w-[384px]">
+            <h3 className="text-center font-bold">Mô tả:</h3>
+            <p className="w-[384px] overflow-hidden text-ellipsis text-center">
+              {watch("projectDescription")?.trim() === "" ? (
+                <p className="text-gray-600">(Chưa có mô tả)</p>
+              ) : (
+                watch("projectDescription")
+              )}
             </p>
           </div>
         </div>

@@ -63,7 +63,7 @@ const AddAlbumDialog = () => {
 
       <DialogContent
         aria-describedby="add-album-description"
-        className="w-fit md:scale-75 lg:scale-100 !max-w-fit flex justify-between gap-[80px]"
+        className="w-fit md:scale-75 lg:scale-100 max-w-fit flex justify-between gap-[80px]"
       >
         <div className="add-box w-[400px] flex flex-col gap-8">
           <DialogTitle className="text-center text-xl">
@@ -183,7 +183,7 @@ const AddAlbumDialog = () => {
         <div className="preview-album flex flex-col items-center justify-center gap-8">
           <h1 className="text-center text-2xl">Xem trước album</h1>
           <div
-            className="album h-[348px] w-[384px] relative"
+            className="album h-[348px] w-[384px] relative border-[1px] border-dashed border-gray-700 rounded-lg"
             key={`album-${"album.id"}`}
           >
             {previewUrls.length > 0 ? (
@@ -192,19 +192,27 @@ const AddAlbumDialog = () => {
                   key={index}
                   src={url}
                   alt={selectedFiles[0]?.name || "Preview"}
-                  className="w-full h-auto object-cover"
+                  className="w-full h-full object-cover rounded-lg"
                 />
               ))
             ) : (
-              <p className="text-gray-600">Chưa có ảnh để hiển thị</p>
+              <p className="text-gray-600 absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%]">
+                Chưa có ảnh để hiển thị
+              </p>
             )}
-            <div className="overlay">
-              <h3 className="title">{albumTitle}</h3>
-            </div>
           </div>
+          <h3 className="title text-xl font-semibold text-center max-w-[384px] overflow-hidden text-ellipsis">
+            {albumTitle}
+          </h3>
           <div className="preview-description max-w-[384px]">
-            <h3 className="text-center font-bold">Mô tả: </h3>
-            <p>{watch("albumDescription")}</p>
+            <h3 className="text-center font-bold">Mô tả:</h3>
+            <p className="w-[384px] overflow-hidden text-ellipsis text-center">
+              {watch("albumDescription")?.trim() === "" ? (
+                <p className="text-gray-600">(Chưa có mô tả)</p>
+              ) : (
+                watch("albumDescription")
+              )}
+            </p>
           </div>
         </div>
       </DialogContent>
