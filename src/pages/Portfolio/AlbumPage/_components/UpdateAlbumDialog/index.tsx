@@ -189,18 +189,18 @@ const UpdateAlbumDialog = ({ albumData, isOpen, onClose }: Props) => {
               <img
                 src={previewUrls[0]}
                 alt={selectedFiles[0]?.name || "Album thumbnail"}
-                className="w-full h-auto object-cover"
+                className="w-full h-full object-cover rounded-lg"
               />
             ) : (
               <p className="text-gray-600">Chưa có ảnh để hiển thị</p>
             )}
-            <div className="overlay">
-              <h3 className="title">{albumTitle}</h3>
-            </div>
           </div>
-          <div className="preview-description max-w-[350px]">
-            <h3 className="text-center font-bold">Mô tả: </h3>
-            <p className="max-w-[350px] break-words">
+          <h3 className="title text-xl font-semibold text-center max-w-[384px] overflow-hidden text-ellipsis">
+            {albumTitle}
+          </h3>
+          <div className="preview-description max-w-[384px]">
+            <h3 className="text-center font-bold">Mô tả:</h3>
+            <p className="w-[384px] overflow-hidden text-ellipsis">
               {watch("albumDescription")}
             </p>
           </div>
