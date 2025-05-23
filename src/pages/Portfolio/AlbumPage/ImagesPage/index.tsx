@@ -7,6 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Skeleton } from "@/components/ui/skeleton";
 import useAuth from "@/hooks/useAuth";
 import useControlAlbum from "@/hooks/useControlAlbum";
+import { useFullScreenGallery } from "@/hooks/useFullScreenGallery";
 import useImageUploader from "@/pages/Portfolio/AlbumPage/useImageUploader";
 import { Fragment, useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -20,9 +21,6 @@ const ImagePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { id } = useParams();
-  const [currentImageIndex, setCurrentImageIndex] = useState<number | null>(
-    null
-  );
   const { albums, editAlbumMutation, form } = useControlAlbum();
   const { photos, deletePhotoMutation } = useImageUploader(id || "");
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
@@ -30,6 +28,15 @@ const ImagePage = () => {
   const [editAlbumInfo, setEditAlbumInfo] = useState<boolean>(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const albumInfo = albums?.find((data) => data.id === id);
+  const skeletonCount = 5;
+
+  const {
+    currentImageIndex,
+    openFullScreen,
+    closeFullScreen,
+    goToNext,
+    goToPrevious,
+  } = useFullScreenGallery(photos || []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -73,32 +80,6 @@ const ImagePage = () => {
       setCheckedItems(photos || []);
     }
     setSelectAllChecked(!selectAllChecked);
-  };
-
-  const skeletonCount = 5;
-
-  const openFullScreen = (index: number) => {
-    setCurrentImageIndex(index);
-  };
-
-  const closeFullScreen = () => {
-    setCurrentImageIndex(null);
-  };
-
-  const goToNext = () => {
-    if (currentImageIndex !== null && photos) {
-      setCurrentImageIndex((prev) =>
-        prev !== null && prev < photos.length - 1 ? prev + 1 : prev
-      );
-    }
-  };
-
-  const goToPrevious = () => {
-    if (currentImageIndex !== null) {
-      setCurrentImageIndex((prev) =>
-        prev !== null && prev > 0 ? prev - 1 : prev
-      );
-    }
   };
 
   return (
@@ -239,15 +220,6 @@ const ImagePage = () => {
                 <i className="fa-solid fa-xmark text-2xl"></i>
               </Button>
 
-              <Button
-                variant="ghost"
-                className="w-10 h-10 absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 disabled:opacity-50 rounded-full"
-                onClick={goToPrevious}
-                disabled={currentImageIndex === 0}
-              >
-                <i className="fa-solid fa-chevron-left text-3xl"></i>
-              </Button>
-
               {/* Container cho ảnh và checkbox */}
               <div className="relative inline-block">
                 <img
@@ -265,7 +237,14 @@ const ImagePage = () => {
                   />
                 )}
               </div>
-
+              <Button
+                variant="ghost"
+                className="w-10 h-10 absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 disabled:opacity-50 rounded-full"
+                onClick={goToPrevious}
+                disabled={currentImageIndex === 0}
+              >
+                <i className="fa-solid fa-chevron-left text-3xl"></i>
+              </Button>
               <Button
                 variant="ghost"
                 className="w-10 h-10 absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 disabled:opacity-50 rounded-full"

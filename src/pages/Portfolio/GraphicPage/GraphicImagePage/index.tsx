@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
 import useAuth from "@/hooks/useAuth";
 import useControlGraphicProject from "@/hooks/useControlGraphicProject";
+import { useFullScreenGallery } from "@/hooks/useFullScreenGallery";
 import FormUpdateProjectInfo from "@/pages/Portfolio/GraphicPage/GraphicImagePage/_components/FormUpdateAlbumInfo/FormUpdateProjectInfo";
 import useGraphicUploader from "@/pages/Portfolio/GraphicPage/useGraphicUploader";
 import { Fragment, useEffect, useState } from "react";
@@ -23,9 +24,6 @@ const GraphicImagePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { id } = useParams();
-  const [currentImageIndex, setCurrentImageIndex] = useState<number | null>(
-    null
-  );
   const { projects, editProjectMutation, form } = useControlGraphicProject();
   const { photos, deletePhotoMutation } = useGraphicUploader(id || "");
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
@@ -35,6 +33,14 @@ const GraphicImagePage = () => {
   const [isRoundedImage, setIsRoundedImage] = useState(true);
   const [selectedGap, setSelectedGap] = useState<string>("mb-4");
   const projectInfo = projects?.find((data) => data.id === id);
+
+  const {
+    currentImageIndex,
+    openFullScreen,
+    closeFullScreen,
+    goToNext,
+    goToPrevious,
+  } = useFullScreenGallery(photos || []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -125,30 +131,6 @@ const GraphicImagePage = () => {
   };
 
   const skeletonCount = 5;
-
-  const openFullScreen = (index: number) => {
-    setCurrentImageIndex(index);
-  };
-
-  const closeFullScreen = () => {
-    setCurrentImageIndex(null);
-  };
-
-  const goToNext = () => {
-    if (currentImageIndex !== null && photos) {
-      setCurrentImageIndex((prev) =>
-        prev !== null && prev < photos.length - 1 ? prev + 1 : prev
-      );
-    }
-  };
-
-  const goToPrevious = () => {
-    if (currentImageIndex !== null) {
-      setCurrentImageIndex((prev) =>
-        prev !== null && prev > 0 ? prev - 1 : prev
-      );
-    }
-  };
 
   return (
     <Fragment>
@@ -317,15 +299,6 @@ const GraphicImagePage = () => {
             <i className="fa-solid fa-xmark text-2xl"></i>
           </Button>
 
-          <Button
-            variant="ghost"
-            className="w-10 h-10 absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 disabled:opacity-50 rounded-full"
-            onClick={goToPrevious}
-            disabled={currentImageIndex === 0}
-          >
-            <i className="fa-solid fa-chevron-left text-3xl"></i>
-          </Button>
-
           {/* Container cho ảnh và checkbox */}
           <div className="relative inline-block">
             <img
@@ -343,7 +316,14 @@ const GraphicImagePage = () => {
               />
             )}
           </div>
-
+          <Button
+            variant="ghost"
+            className="w-10 h-10 absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 disabled:opacity-50 rounded-full"
+            onClick={goToPrevious}
+            disabled={currentImageIndex === 0}
+          >
+            <i className="fa-solid fa-chevron-left text-3xl"></i>
+          </Button>
           <Button
             variant="ghost"
             className="w-10 h-10 absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 disabled:opacity-50 rounded-full"
