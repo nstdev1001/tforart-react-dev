@@ -206,8 +206,12 @@ const AddAlbumDialog = () => {
           </h3>
           <div className="preview-description max-w-[384px]">
             <h3 className="text-center font-bold">Mô tả:</h3>
-            <p className="w-[384px] overflow-hidden text-ellipsis">
-              {watch("albumDescription")}
+            <p className="w-[384px] overflow-hidden text-ellipsis text-center">
+              {watch("albumDescription")?.trim() === "" ? (
+                <p className="text-gray-600">(Chưa có mô tả)</p>
+              ) : (
+                watch("albumDescription")
+              )}
             </p>
           </div>
         </div>

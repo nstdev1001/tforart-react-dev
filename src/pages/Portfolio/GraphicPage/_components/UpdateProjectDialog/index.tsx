@@ -195,7 +195,7 @@ const UpdateProjectDialog = ({ projectData, isOpen, onClose }: Props) => {
               <img
                 src={previewUrls[0]}
                 alt={selectedFiles[0]?.name || "Project thumbnail"}
-                className="w-full h-full object-cover rounded-lg"
+                className="w-full h-auto object-cover"
               />
             ) : (
               <p className="text-gray-600 absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%]">
@@ -208,8 +208,12 @@ const UpdateProjectDialog = ({ projectData, isOpen, onClose }: Props) => {
           </h3>
           <div className="preview-description max-w-[384px]">
             <h3 className="text-center font-bold">Mô tả:</h3>
-            <p className="w-[384px] overflow-hidden text-ellipsis">
-              {watch("projectDescription")}
+            <p className="w-[384px] overflow-hidden text-ellipsis text-center">
+              {watch("projectDescription")?.trim() === "" ? (
+                <p className="text-gray-600">(Chưa có mô tả)</p>
+              ) : (
+                watch("projectDescription")
+              )}
             </p>
           </div>
         </div>

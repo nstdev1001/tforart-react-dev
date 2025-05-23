@@ -206,8 +206,12 @@ const AddProjectDialog = () => {
           </h3>
           <div className="preview-description max-w-[384px]">
             <h3 className="text-center font-bold">Mô tả:</h3>
-            <p className="w-[384px] overflow-hidden text-ellipsis">
-              {watch("projectDescription")}
+            <p className="w-[384px] overflow-hidden text-ellipsis text-center">
+              {watch("projectDescription")?.trim() === "" ? (
+                <p className="text-gray-600">(Chưa có mô tả)</p>
+              ) : (
+                watch("projectDescription")
+              )}
             </p>
           </div>
         </div>
