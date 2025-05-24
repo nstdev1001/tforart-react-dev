@@ -1,0 +1,38 @@
+.project {
+  border: 1px solid rgb(53, 53, 53);
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%; /* This maintains the 1:1 aspect ratio */
+  border-radius: 10px;
+}
+
+.project > * {
+  position: absolute;
+}
+
+.project .title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  margin-left: 10px;
+}
+
+.project .overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 35%; /* Chiếm 30% chiều cao ảnh */
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.8),
+    rgba(0, 0, 0, 0)
+  ); /* Gradient nhạt dần lên */
+  display: flex;
+  align-items: flex-end; /* Canh chữ phía dưới */
+  padding: 10px;
+  color: #fff; /* Chữ trắng */
+  font-size: 1rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); /* Đổ bóng chữ */
+}

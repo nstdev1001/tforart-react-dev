@@ -1,4 +1,6 @@
+import styles from "./style.module.css";
 import CompressImageLoading from "@/components/Loading/CompressImageLoading";
+import LineSpinerLoading from "@/components/Loading/LineSpinerLoading";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -183,27 +185,33 @@ const AddAlbumDialog = () => {
         <div className="preview-album flex flex-col items-center justify-center gap-8">
           <h1 className="text-center text-2xl">Xem trước album</h1>
           <div
-            className="album h-[348px] w-[384px] relative border-[1px] border-dashed border-gray-700 rounded-lg"
+            className={`${styles.album} relative`}
             key={`album-${"album.id"}`}
           >
             {previewUrls.length > 0 ? (
               previewUrls.map((url, index) => (
-                <img
-                  key={index}
-                  src={url}
-                  alt={selectedFiles[0]?.name || "Preview"}
-                  className="w-full h-full object-cover rounded-lg"
-                />
+                <>
+                  <img
+                    key={index}
+                    src={url}
+                    alt={selectedFiles[0]?.name || "Preview"}
+                    className="w-full h-full object-cover rounded-lg"
+                  />
+                  <div className={styles.overlay}>
+                    <h3 className={styles.title}>{albumTitle}</h3>
+                  </div>
+                </>
               ))
             ) : (
               <p className="text-gray-600 absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%]">
-                Chưa có ảnh để hiển thị
+                {isCompressing ? (
+                  <LineSpinerLoading />
+                ) : (
+                  "Chưa có ảnh để hiển thị"
+                )}
               </p>
             )}
           </div>
-          <h3 className="title text-xl font-semibold text-center max-w-[384px] overflow-hidden text-ellipsis">
-            {albumTitle}
-          </h3>
           <div className="preview-description max-w-[384px]">
             <h3 className="text-center font-bold">Mô tả:</h3>
             <p className="w-[384px] overflow-hidden text-ellipsis text-center">
