@@ -1,3 +1,4 @@
+import styles from "./style.module.css";
 import CompressImageLoading from "@/components/Loading/CompressImageLoading";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -182,22 +183,27 @@ const UpdateAlbumDialog = ({ albumData, isOpen, onClose }: Props) => {
         <div className="preview-album flex flex-col items-center justify-center gap-8">
           <h1 className="text-center text-2xl">Xem trước album</h1>
           <div
-            className="album h-[348px] w-[384px] relative"
+            className={`${styles.album} relative`}
             key={`album-${"album.id"}`}
           >
             {previewUrls.length > 0 ? (
-              <img
-                src={previewUrls[0]}
-                alt={selectedFiles[0]?.name || "Album thumbnail"}
-                className="w-full h-full object-cover rounded-lg"
-              />
+              <>
+                <img
+                  src={previewUrls[0]}
+                  alt={selectedFiles[0]?.name || "Album thumbnail"}
+                  className="w-full h-full object-cover rounded-lg"
+                />
+                <div className={styles.overlay}>
+                  <h3 className={styles.title}>{albumTitle}</h3>
+                </div>
+              </>
             ) : (
               <p className="text-gray-600">Chưa có ảnh để hiển thị</p>
             )}
           </div>
-          <h3 className="title text-xl font-semibold text-center max-w-[384px] overflow-hidden text-ellipsis">
+          {/* <h3 className="title text-xl font-semibold text-center max-w-[384px] overflow-hidden text-ellipsis">
             {albumTitle}
-          </h3>
+          </h3> */}
           <div className="preview-description max-w-[384px]">
             <h3 className="text-center font-bold">Mô tả:</h3>
             <p className="w-[384px] overflow-hidden text-ellipsis text-center">
